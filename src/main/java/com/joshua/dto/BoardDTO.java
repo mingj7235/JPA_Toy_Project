@@ -19,4 +19,11 @@ public class BoardDTO {
         this.boardContent = entity.getBoardContent();
         this.member_id = entity.getMember().getId();
     }
+
+    public Board toEntity () {
+        return Board.builder()
+                .boardTitle(boardTitle)
+                .boardContent(boardContent)
+                .build();
+    }
 }

@@ -1,5 +1,6 @@
 package com.joshua.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,4 +22,11 @@ public class Board {
     @ManyToOne
     @JoinColumn (name = "MEMBER_ID")
     private Member member;
+
+    @Builder
+    public Board(String boardTitle, String boardContent, Member member) {
+        this.boardTitle = boardTitle;
+        this.boardContent = boardContent;
+        this.member = member;
+    }
 }

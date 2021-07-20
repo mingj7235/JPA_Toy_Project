@@ -16,12 +16,16 @@ public class BoardService {
     private final MemberRepository memberRepository;
 
     public Long saveBoard (BoardDTO boardDTO) {
-        Board board = new Board();
-        board.setBoardTitle(boardDTO.getBoardTitle());
-        board.setBoardContent(boardDTO.getBoardContent());
+        Board board = boardDTO.toEntity();
         board.setMember(memberRepository.findById(boardDTO.getMember_id())
                 .orElseThrow(() -> new IllegalArgumentException("찾는 멤버가 없습니다.")));
 
         return boardRepository.save(board).getId();
+    }
+
+    public BoardDTO getBoard (Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("찾는 게시판 없슴"));
+        return new BoardDTO(board);
     }
 }

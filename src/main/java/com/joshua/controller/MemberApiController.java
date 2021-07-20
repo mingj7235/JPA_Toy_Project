@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberApiController {
     private final MemberService memberService;
 
-    @PostMapping ("/member")
+    @PostMapping ("/members")
     public void saveMember (MemberDTO memberDTO) {
         memberService.saveMember(memberDTO);
     }
