@@ -14,10 +14,14 @@ public class BoardApiController {
 
     private final BoardService boardService;
 
-    @PostMapping("/boards")
-    public Long saveBoard (BoardDTO boardDTO) {
-        return boardService.saveBoard(boardDTO);
+    @PostMapping("/boards/member/{memberId}")
+    public Long saveBoard (@PathVariable Long memberId, BoardDTO boardDTO) {
+        return boardService.saveBoard(memberId, boardDTO);
     }
+//    @PostMapping("/boards")
+//    public Long saveBoard (BoardDTO boardDTO) {
+//        return boardService.saveBoard(boardDTO);
+//    }
 
     @GetMapping("/boards/{id}")
     public BoardDTO getBoard (@PathVariable Long id) {

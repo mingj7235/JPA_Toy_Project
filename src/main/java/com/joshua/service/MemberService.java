@@ -21,22 +21,22 @@ public class MemberService {
     }
 
     public MemberDTO getMember (Long id) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("찾는 멤버 없슴"));
-        return new MemberDTO(member);
+        return new MemberDTO(findMember(id));
     }
 
     public Long updateMember (Long id, MemberDTO memberDTO) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("찾는 멤버 없슴"));
+        Member member = findMember(id);
         member.setMemberName(memberDTO.getMemberName());
         member.setMemberAge(memberDTO.getMemberAge());
         return member.getId();
     }
 
     public void deleteMember (Long id) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("찾는 멤버 없슴"));
-        memberRepository.delete(member);
+        memberRepository.delete(findMember(id));
+    }
+
+    public Member findMember (Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("찾는 멤버 없습니다."));
     }
 }

@@ -17,13 +17,20 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
-    public Long saveBoard (BoardDTO boardDTO) {
+    public Long saveBoard (Long memberId, BoardDTO boardDTO) {
         Board board = boardDTO.toEntity();
-        board.setMember(memberRepository.findById(boardDTO.getMember_id())
+        board.setMember(memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("찾는 멤버가 없습니다.")));
 
         return boardRepository.save(board).getId();
     }
+//    public Long saveBoard (BoardDTO boardDTO) {
+//        Board board = boardDTO.toEntity();
+//        board.setMember(memberRepository.findById(boardDTO.getMember_id())
+//                .orElseThrow(() -> new IllegalArgumentException("찾는 멤버가 없습니다.")));
+//
+//        return boardRepository.save(board).getId();
+//    }
 
 //    public BoardDTO getBoard (Long id) {
 //        Board board = boardRepository.findById(id)

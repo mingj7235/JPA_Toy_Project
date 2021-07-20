@@ -16,7 +16,7 @@ public class BoardDTO {
 
     private String boardTitle;
     private String boardContent;
-    private Long member_id;
+//    private Long member_id;
 //    private MemberDTO member;
     //MemberDTO가 아닌, Member로 조회는 여기서는 안전하다. 왜?
     //Member객체는 순환참조할 필드를 가지고 있지 않기 때문이다.
