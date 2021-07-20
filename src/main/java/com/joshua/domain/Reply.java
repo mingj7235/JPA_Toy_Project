@@ -1,37 +1,52 @@
 package com.joshua.domain;
 
-import com.joshua.dto.ReplyDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-public class Board {
+public class Reply {
 
     @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String boardTitle;
-    private String boardContent;
+    private String replyTitle;
+    private String replyContent;
+
+    @ManyToOne
+    @JoinColumn (name = "BOARD_ID")
+    private Board board;
 
     @ManyToOne
     @JoinColumn (name = "MEMBER_ID")
     private Member member;
 
-    @OneToMany (mappedBy = "board", cascade = CascadeType.ALL)
-    private List<Reply> replies;
-
     @Builder
-    public Board(String boardTitle, String boardContent, Member member) {
-        this.boardTitle = boardTitle;
-        this.boardContent = boardContent;
+    public Reply(String replyTitle, String replyContent, Board board, Member member) {
+        this.replyTitle = replyTitle;
+        this.replyContent = replyContent;
+        this.board = board;
         this.member = member;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
