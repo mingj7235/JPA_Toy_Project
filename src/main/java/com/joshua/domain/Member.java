@@ -1,5 +1,6 @@
 package com.joshua.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,5 +22,9 @@ public class Member {
 //    @OneToMany (mappedBy = "member")
 //    private Board board;
 
-
+    @Builder
+    public Member(String memberName, Integer memberAge) {
+        this.memberName = memberName;
+        this.memberAge = memberAge;
+    }
 }

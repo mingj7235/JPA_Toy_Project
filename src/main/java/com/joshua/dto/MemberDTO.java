@@ -16,4 +16,11 @@ public class MemberDTO {
         this.memberName = entity.getMemberName();
         this.memberAge = entity.getMemberAge();
     }
+
+    public Member toEntity () {
+        return Member.builder()
+                .memberName(memberName)
+                .memberAge(memberAge)
+                .build();
+    }
 }

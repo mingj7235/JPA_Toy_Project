@@ -23,9 +23,31 @@ public class BoardService {
         return boardRepository.save(board).getId();
     }
 
+//    public BoardDTO getBoard (Long id) {
+//        Board board = boardRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("찾는 게시판 없슴"));
+//        board.setMember(memberRepository.findById(board.getMember().getId())
+//            .orElseThrow(()->new IllegalArgumentException("멤버없슴")));
+//        return new BoardDTO(board);
+//    }
     public BoardDTO getBoard (Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("찾는 게시판 없슴"));
         return new BoardDTO(board);
+    }
+
+    public Long updateBoard (Long id, BoardDTO boardDTO) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("찾는 게시판 없슴"));
+
+        board.setBoardTitle(boardDTO.getBoardTitle());
+        board.setBoardContent(boardDTO.getBoardContent());
+        return board.getId();
+    }
+
+    public void deleteBoard (Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("찾는 게시판 없습니다"));
+        boardRepository.delete(board);
     }
 }
