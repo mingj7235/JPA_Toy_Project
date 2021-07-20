@@ -19,9 +19,9 @@ public class ReplyService {
 
     public Long saveReply (Long boardId, Long memberId, ReplyDTO replyDTO) {
         Reply reply = replyDTO.toEntity();
-        reply.setMember(memberRepository.findById(boardId)
+        reply.setMember(memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("멤버가 없습니다")));
-        reply.setBoard(boardRepository.findById(memberId)
+        reply.setBoard(boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("게시판이 아닙니다.")));
 
         return replyRepository.save(reply).getId();

@@ -5,6 +5,8 @@ import com.joshua.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class MemberApiController {
@@ -19,6 +21,11 @@ public class MemberApiController {
     public MemberDTO getMember (@PathVariable Long id) {
         MemberDTO memberDTO = memberService.getMember(id);
         return memberDTO;
+    }
+
+    @GetMapping("/members")
+    public List<MemberDTO> getMemberList () {
+        return memberService.getMemberList();
     }
 
     @PatchMapping ("/members/{id}")

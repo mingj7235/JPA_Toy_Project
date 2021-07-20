@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -24,10 +27,16 @@ public class MemberService {
         return new MemberDTO(findMember(id));
     }
 
+    public List<MemberDTO> getMemberList () {
+        return memberRepository.findAll().stream()
+                .map(MemberDTO::new).collect(Collectors.toList());
+    }
+
     public Long updateMember (Long id, MemberDTO memberDTO) {
         Member member = findMember(id);
         member.setMemberName(memberDTO.getMemberName());
         member.setMemberAge(memberDTO.getMemberAge());
+        member.setGender(memberDTO.getGender());
         return member.getId();
     }
 

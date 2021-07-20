@@ -28,6 +28,8 @@ public class BoardApiController {
         return boardService.getBoard(id);
     }
 
+
+    //size와 page는 param으로 날아가면 자동으로 pageable에 꽂힌다.
     @GetMapping("/boards")
     public Page<BoardDTO> getBoardList (Pageable pageable) {
         Page<BoardDTO> boardLists = boardService.getAllBoards(pageable);
