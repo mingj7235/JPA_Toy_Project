@@ -18,7 +18,7 @@ public class ReplyDTO {
     private String replyContent;
     private Long board_id;
     private Long member_id;
-    private List<ReReplyDTO> reReplies;
+//    private List<ReReplyDTO> reReplies;
 
     public ReplyDTO (Reply entity) {
         this.replyId = entity.getId();
@@ -26,8 +26,8 @@ public class ReplyDTO {
         this.replyContent = entity.getReplyContent();
         this.board_id = entity.getBoard().getId();
         this.member_id = entity.getMember().getId();
-        this.reReplies = entity.getRereplies().stream()
-                .map(ReReplyDTO::new).collect(Collectors.toList());
+//        this.reReplies = entity.getRereplies().stream()
+//                .map(ReReplyDTO::new).collect(Collectors.toList());
     }
 
     public Reply toEntity () {

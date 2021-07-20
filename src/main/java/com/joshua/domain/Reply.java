@@ -36,6 +36,10 @@ public class Reply {
     @OneToMany (mappedBy = "superReply", cascade = CascadeType.ALL)
     private List<Reply> subReply = new ArrayList<>();
 
+    private Integer level;
+
+    private boolean isLive;
+
 //    @OneToMany (mappedBy = "reply",cascade = CascadeType.ALL)
 //    private List<Rereply> rereplies;
 
