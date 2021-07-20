@@ -23,6 +23,23 @@ public class ReReplyService {
         return reReplyRepository.save(rereply).getId();
     }
 
+    public ReReplyDTO getReReply (Long id) {
+        Rereply rereply = findReReply(id);
+        return new ReReplyDTO(rereply);
+    }
+
+    public Long updateReReply (Long id, ReReplyDTO reReplyDTO) {
+        Rereply rereply = findReReply(id);
+        rereply.setReReplyTitle(reReplyDTO.getReReplyTitle());
+        rereply.setReReplyContent(reReplyDTO.getReReplyContent());
+        return rereply.getId();
+    }
+
+    public void deleteReReply (Long id) {
+        Rereply rereply = findReReply(id);
+        reReplyRepository.delete(rereply);
+    }
+
     public Reply findReply (Long id) {
         return replyRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("부모댓글이 없어요"));
     }
