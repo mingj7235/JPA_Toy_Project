@@ -6,7 +6,9 @@ import com.joshua.repository.BoardRepository;
 import com.joshua.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,8 +58,11 @@ public class BoardService {
     }
 
     public Page<BoardDTO> getAllBoards (Pageable pageable) {
-        Page<BoardDTO> boardList = boardRepository.findAll(pageable)
-                .map(BoardDTO::new);
+
+        PageRequest id = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending());
+        Page<BoardDTO> boardList = boardRepository.findAll(id).map(BoardDTO::new);
+        //Page<BoardDTO> boardList = boardRepository.findAll(pageable)
+        //                .map(BoardDTO::new);
         return boardList;
     }
 
