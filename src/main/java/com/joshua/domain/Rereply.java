@@ -23,10 +23,15 @@ public class Rereply {
     @JoinColumn (name = "REPLY_ID")
     private Reply reply;
 
+    @ManyToOne
+    @JoinColumn (name = "MEMBER_ID")
+    private Member member;
+
     @Builder
-    public Rereply(String reReplyTitle, String reReplyContent, Reply reply) {
+    public Rereply(String reReplyTitle, String reReplyContent, Reply reply, Member member) {
         this.reReplyTitle = reReplyTitle;
         this.reReplyContent = reReplyContent;
         this.reply = reply;
+        this.member = member;
     }
 }

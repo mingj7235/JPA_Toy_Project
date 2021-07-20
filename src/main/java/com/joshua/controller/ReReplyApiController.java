@@ -11,23 +11,23 @@ public class ReReplyApiController {
 
     private final ReReplyService reReplyService;
 
-    @PostMapping("/rereplies/{replyId}")
-    public Long saveReReply (@PathVariable Long replyId, ReReplyDTO reReplyDTO) {
-        return reReplyService.saveReReply(replyId, reReplyDTO);
+    @PostMapping("/rereplies/reply/{replyId}/member/{memberId}")
+    public Long saveReReply (@PathVariable Long replyId, @PathVariable Long memberId, ReReplyDTO reReplyDTO) {
+        return reReplyService.saveReReply(replyId, memberId, reReplyDTO);
     }
 
     @GetMapping ("/rereplies/{id}")
-    public ReReplyDTO getReReply (Long id) {
+    public ReReplyDTO getReReply (@PathVariable Long id) {
         return reReplyService.getReReply(id);
     }
 
     @PutMapping ("/rereplies/{id}")
-    public Long updateReReply (Long id, ReReplyDTO reReplyDTO) {
+    public Long updateReReply (@PathVariable Long id, ReReplyDTO reReplyDTO) {
         return reReplyService.updateReReply(id, reReplyDTO);
     }
 
     @DeleteMapping ("/rereplies/{id}")
-    public void deleteReReply (Long id) {
+    public void deleteReReply (@PathVariable Long id) {
         reReplyService.deleteReReply(id);
     }
  }

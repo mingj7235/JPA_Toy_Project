@@ -3,6 +3,7 @@ package com.joshua.service;
 import com.joshua.domain.Reply;
 import com.joshua.domain.Rereply;
 import com.joshua.dto.ReReplyDTO;
+import com.joshua.repository.MemberRepository;
 import com.joshua.repository.ReReplyRepository;
 import com.joshua.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReReplyService {
     private final ReReplyRepository reReplyRepository;
     private final ReplyRepository replyRepository;
+    private final MemberRepository memberRepository;
 
-    public Long saveReReply (Long replyId, ReReplyDTO reReplyDTO) {
+    public Long saveReReply (Long replyId, Long memberId, ReReplyDTO reReplyDTO) {
         Rereply rereply = reReplyDTO.toEntity();
         rereply.setReply(findReply(replyId));
+        rereply.setMember(memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("멤버가 없습니다.")));
 
         return reReplyRepository.save(rereply).getId();
     }
