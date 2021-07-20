@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,6 +27,9 @@ public class Reply {
     @ManyToOne
     @JoinColumn (name = "MEMBER_ID")
     private Member member;
+
+    @OneToMany (mappedBy = "reply",cascade = CascadeType.ALL)
+    private List<Rereply> rereplies;
 
     @Builder
     public Reply(String replyTitle, String replyContent, Board board, Member member) {
