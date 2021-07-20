@@ -33,14 +33,11 @@ public class BoardService {
 //        return new BoardDTO(board);
 //    }
     public BoardDTO getBoard (Long id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("찾는 게시판 없슴"));
-        return new BoardDTO(board);
+        return new BoardDTO(findBoard(id));
     }
 
     public Long updateBoard (Long id, BoardDTO boardDTO) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("찾는 게시판 없슴"));
+        Board board = findBoard(id);
 
         board.setBoardTitle(boardDTO.getBoardTitle());
         board.setBoardContent(boardDTO.getBoardContent());
@@ -48,9 +45,7 @@ public class BoardService {
     }
 
     public void deleteBoard (Long id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("찾는 게시판 없습니다"));
-        boardRepository.delete(board);
+        boardRepository.delete(findBoard(id));
     }
 
     public Page<BoardDTO> getAllBoards (Pageable pageable) {
@@ -58,5 +53,11 @@ public class BoardService {
                 .map(BoardDTO::new);
 
         return boardList;
+    }
+
+    public Board findBoard (Long id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("찾는 게시판 없습니다."));
+
     }
 }
