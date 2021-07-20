@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -28,8 +29,15 @@ public class Reply {
     @JoinColumn (name = "MEMBER_ID")
     private Member member;
 
-    @OneToMany (mappedBy = "reply",cascade = CascadeType.ALL)
-    private List<Rereply> rereplies;
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn (name = "super_reply_id")
+    private Reply superReply;
+
+    @OneToMany (mappedBy = "superReply", cascade = CascadeType.ALL)
+    private List<Reply> subReply = new ArrayList<>();
+
+//    @OneToMany (mappedBy = "reply",cascade = CascadeType.ALL)
+//    private List<Rereply> rereplies;
 
     @Builder
     public Reply(String replyTitle, String replyContent, Board board, Member member) {

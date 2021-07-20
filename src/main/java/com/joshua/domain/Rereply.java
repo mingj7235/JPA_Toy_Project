@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+//@Entity
 public class Rereply {
 
     @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
