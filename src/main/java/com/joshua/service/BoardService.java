@@ -58,8 +58,6 @@ public class BoardService {
     public Page<BoardDTO> getAllBoards (Pageable pageable) {
         Page<BoardDTO> boardList = boardRepository.findAll(pageable)
                 .map(BoardDTO::new);
-
-
         return boardList;
     }
 

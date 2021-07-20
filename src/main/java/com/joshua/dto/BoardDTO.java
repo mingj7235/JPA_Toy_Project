@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class BoardDTO {
 
+    private Long boardId;
     private String boardTitle;
     private String boardContent;
 //    private Long member_id;
@@ -24,12 +24,14 @@ public class BoardDTO {
     private List <ReplyDTO> replies;
 
     public BoardDTO (Board entity) {
+        this.boardId = entity.getId();
         this.boardTitle = entity.getBoardTitle();
         this.boardContent = entity.getBoardContent();
 //        this.member_id = entity.getMember().getId();
         this.member = entity.getMember();
         this.replies = entity.getReplies().stream()
                 .map(ReplyDTO::new).collect(Collectors.toList());
+                //.map(reply -> new ReplyDTO(reply)).collect(Collectors.toList());
     }
 
     public Board toEntity () {

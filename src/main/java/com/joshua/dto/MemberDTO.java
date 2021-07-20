@@ -7,16 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class MemberDTO {
-    private Long id;
+    private Long memberId;
     private String memberName;
     private Integer memberAge;
     private Gender gender;
 
     public MemberDTO (Member entity) {
-        this.id = entity.getId();
+        this.memberId = entity.getId();
         this.memberName = entity.getMemberName();
         this.memberAge = entity.getMemberAge();
         this.gender = entity.getGender();
