@@ -4,6 +4,8 @@ import com.joshua.domain.Board;
 import com.joshua.dto.BoardDTO;
 import com.joshua.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +23,14 @@ public class BoardApiController {
     public BoardDTO getBoard (@PathVariable Long id) {
         return boardService.getBoard(id);
     }
+
+    @GetMapping("/boards")
+    public Page<BoardDTO> getBoardList (Pageable pageable) {
+        Page<BoardDTO> boardLists = boardService.getAllBoards(pageable);
+        return boardLists;
+    }
+
+
 //    @GetMapping("/boards/{id}")
 //    public Board getBoard (@PathVariable Long id) {
 //        BoardDTO boardDTO = boardService.getBoard(id);
@@ -36,4 +46,6 @@ public class BoardApiController {
     public void deleteBoard (@PathVariable Long id) {
         boardService.deleteBoard(id);
     }
+
+
 }
