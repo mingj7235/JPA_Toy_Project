@@ -29,7 +29,7 @@ public class BoardDTO {
     private Member member;
     private List <ReplyDTO> replies;
 
-    private Page<ReplyDTO> repliesPage;
+    //private Page<ReplyDTO> repliesPage;
 
 
     public BoardDTO (Board entity) {

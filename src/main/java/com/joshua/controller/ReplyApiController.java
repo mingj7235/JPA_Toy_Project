@@ -17,7 +17,7 @@ public class ReplyApiController {
     public String saveReply (@PathVariable Long boardId, @PathVariable Long memberId, ReplyDTO replyDTO) {
 //        return replyService.saveReply(boardId, memberId, replyDTO);
         replyService.saveReply(boardId, memberId, replyDTO);
-        return "redirect:/boards/?id="+boardId;
+        return "redirect:/boards/"+boardId;
 
     }
 
@@ -38,14 +38,14 @@ public class ReplyApiController {
     public String updateReply (@PathVariable Long id, ReplyDTO replyDTO) {
         Long boardId = replyDTO.getBoard_id();
         replyService.updateReply(id,replyDTO);
-        return "redirect:/boards/?id=" + boardId;
+        return "redirect:/boards/" + boardId;
     }
 
     @DeleteMapping ("/replies/{id}")
     public String deleteReply (@PathVariable Long id) {
         Long boardId = replyService.findReply(id).getBoard().getId();
         replyService.deleteReply(id);
-        return "redirect:/boards/?id="+boardId;
+        return "redirect:/boards/"+boardId;
     }
 
 
