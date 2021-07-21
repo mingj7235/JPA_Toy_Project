@@ -44,11 +44,11 @@ public class CategoryService {
         }
 
         category.setLive(true);
-        Long categoryId = categoryRepository.save(category).getId();
+        categoryRepository.save(category);
 
         Map<String, Category> categoryMap = new HashMap<>();
 
-        categoryMap.put(category.getCode(), category);
+        categoryMap.put(category.getCode(), categoryDTO.toEntity());
 
         return categoryMap;
     }
