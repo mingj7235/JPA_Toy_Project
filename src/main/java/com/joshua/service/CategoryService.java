@@ -56,7 +56,7 @@ public class CategoryService {
 
         Map<String, CategoryDTO> data = new HashMap<>();
 
-        data.put(category.getCode(), categoryDTO);
+        data.put(category.getName(), categoryDTO);
         System.out.println(data);
         return data;
 
