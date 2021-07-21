@@ -18,7 +18,7 @@ public class ReplyService {
     private final BoardRepository boardRepository;
 
     public Long saveReply (Long boardId, Long memberId, ReplyDTO replyDTO) {
-        Reply reply = new Reply();
+        Reply reply = replyDTO.toEntity();
 
         //supReply create
         if (replyDTO.getSuper_reply_id() == null || replyDTO.getSuper_reply_id() == 0L) {
@@ -41,8 +41,8 @@ public class ReplyService {
             supReply.getSubReply().add(reply);
 
         }
-        reply.setReplyTitle(replyDTO.getReplyTitle());
-        reply.setReplyContent(replyDTO.getReplyContent());
+//        reply.setReplyTitle(replyDTO.getReplyTitle());
+//        reply.setReplyContent(replyDTO.getReplyContent());
         reply.setMember(memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("멤버가 없습니다")));
         reply.setBoard(boardRepository.findById(boardId)

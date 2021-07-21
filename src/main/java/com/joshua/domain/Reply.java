@@ -44,11 +44,12 @@ public class Reply {
 //    private List<Rereply> rereplies;
 
     @Builder
-    public Reply(String replyTitle, String replyContent, Board board, Member member) {
+    public Reply(String replyTitle, String replyContent, Board board, Member member, Reply superReply) {
         this.replyTitle = replyTitle;
         this.replyContent = replyContent;
         this.board = board;
         this.member = member;
+        this.superReply = superReply;
     }
 }
 

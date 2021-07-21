@@ -28,12 +28,17 @@ public class ReplyDTO {
         this.member_id = entity.getMember().getId();
         this.level = entity.getLevel();
 
-        if (entity.getSuperReply().getId() == null) {
-            this.super_reply_id = 0L;
+        if (entity.getSuperReply() == null) {
+
         } else {
             this.super_reply_id = entity.getSuperReply().getId();
         }
 
+//        if (entity.getSuperReply().getId() == null) {
+//            this.super_reply_id = 0L;
+//        } else {
+//            this.super_reply_id = entity.getSuperReply().getId();
+//        }
         this.isLive = entity.isLive();
 //        this.reReplies = entity.getRereplies().stream()
 //                .map(ReReplyDTO::new).collect(Collectors.toList());
