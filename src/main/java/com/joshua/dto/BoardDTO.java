@@ -2,9 +2,14 @@ package com.joshua.dto;
 
 import com.joshua.domain.Board;
 import com.joshua.domain.Member;
+import com.joshua.domain.Reply;
+import com.joshua.service.ReplyService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +28,9 @@ public class BoardDTO {
     //Member객체는 순환참조할 필드를 가지고 있지 않기 때문이다.
     private Member member;
     private List <ReplyDTO> replies;
+
+    private Page<ReplyDTO> repliesPage;
+
 
     public BoardDTO (Board entity) {
         this.boardId = entity.getId();

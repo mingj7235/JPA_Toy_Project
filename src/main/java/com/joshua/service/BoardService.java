@@ -28,6 +28,7 @@ public class BoardService {
     }
 
     public BoardDTO getBoard (Long id) {
+
         return new BoardDTO(findBoard(id));
     }
 

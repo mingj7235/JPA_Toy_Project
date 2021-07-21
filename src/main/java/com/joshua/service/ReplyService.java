@@ -1,5 +1,6 @@
 package com.joshua.service;
 
+import com.joshua.domain.Board;
 import com.joshua.domain.Reply;
 import com.joshua.dto.ReplyDTO;
 import com.joshua.repository.BoardRepository;
@@ -52,6 +53,7 @@ public class ReplyService {
         reply.setBoard(boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("게시판이 아닙니다.")));
         reply.setLive(true);
+
         return replyRepository.save(reply).getId();
     }
 
@@ -66,6 +68,7 @@ public class ReplyService {
         Page<ReplyDTO> replyList = replyRepository.findAll(id).map(ReplyDTO::new);
         return replyList;
     }
+
 
     public Long updateReply (Long id, ReplyDTO replyDTO) {
         Reply reply = findReply(id);

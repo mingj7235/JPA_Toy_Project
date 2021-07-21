@@ -18,14 +18,17 @@ public class Reply {
     @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column (nullable = false)
     private String replyTitle;
+
+    @Column (nullable = false)
     private String replyContent;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "BOARD_ID")
     private Board board;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "MEMBER_ID")
     private Member member;
 
