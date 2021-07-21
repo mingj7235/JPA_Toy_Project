@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,8 +23,12 @@ public class Member {
     @Enumerated (value = EnumType.STRING)
     private Gender gender;
 
-//    @OneToMany (mappedBy = "member")
-//    private Board board;
+    @OneToMany (mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Board> boards;
+
+    @OneToMany (mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Reply> replies;
+
 
     @Builder
     public Member(String memberName, Integer memberAge, Gender gender) {
