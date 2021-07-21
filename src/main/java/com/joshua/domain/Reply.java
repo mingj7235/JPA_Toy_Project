@@ -38,7 +38,7 @@ public class Reply {
 
     private Integer level;
 
-    private boolean isLive;
+    private boolean live;
 
 //    @OneToMany (mappedBy = "reply",cascade = CascadeType.ALL)
 //    private List<Rereply> rereplies;

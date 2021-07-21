@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,6 +15,9 @@ public class ReplyDTO {
     private String replyContent;
     private Long board_id;
     private Long member_id;
+    private Long super_reply_id;
+    private Integer level;
+    private boolean isLive;
 //    private List<ReReplyDTO> reReplies;
 
     public ReplyDTO (Reply entity) {
@@ -26,6 +26,15 @@ public class ReplyDTO {
         this.replyContent = entity.getReplyContent();
         this.board_id = entity.getBoard().getId();
         this.member_id = entity.getMember().getId();
+        this.level = entity.getLevel();
+
+        if (entity.getSuperReply().getId() == null) {
+            this.super_reply_id = 0L;
+        } else {
+            this.super_reply_id = entity.getSuperReply().getId();
+        }
+
+        this.isLive = entity.isLive();
 //        this.reReplies = entity.getRereplies().stream()
 //                .map(ReReplyDTO::new).collect(Collectors.toList());
     }
