@@ -6,17 +6,20 @@ import com.joshua.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+//@RestController
+@Controller
 @RequiredArgsConstructor
 public class BoardApiController {
 
     private final BoardService boardService;
 
     @PostMapping("/boards/member/{memberId}")
-    public Long saveBoard (@PathVariable Long memberId, BoardDTO boardDTO) {
-        return boardService.saveBoard(memberId, boardDTO);
+    public String saveBoard (@PathVariable Long memberId, BoardDTO boardDTO) {
+        Long boardId = boardService.saveBoard(memberId, boardDTO);
+        return "redirect:/boards/"+boardId;
     }
 //    @PostMapping("/boards")
 //    public Long saveBoard (BoardDTO boardDTO) {
@@ -24,18 +27,18 @@ public class BoardApiController {
 //    }
 
     @GetMapping("/boards/{id}")
+    @ResponseBody
     public BoardDTO getBoard (@PathVariable Long id) {
         return boardService.getBoard(id);
     }
 
-
     //size와 page는 param으로 날아가면 자동으로 pageable에 꽂힌다.
     @GetMapping("/boards")
+    @ResponseBody
     public Page<BoardDTO> getBoardList (Pageable pageable) {
         Page<BoardDTO> boardLists = boardService.getAllBoards(pageable);
         return boardLists;
     }
-
 
 //    @GetMapping("/boards/{id}")
 //    public Board getBoard (@PathVariable Long id) {
@@ -44,14 +47,16 @@ public class BoardApiController {
 //    }
 
     @PutMapping ("/boards/{id}")
-    public Long updateBoard (@PathVariable Long id, BoardDTO boardDTO) {
-        return boardService.updateBoard(id, boardDTO);
+    public String updateBoard (@PathVariable Long id, BoardDTO boardDTO) {
+        Long boardId = boardService.updateBoard(id, boardDTO);
+        return "redirect:/boards/" + boardId;
     }
 
     @DeleteMapping ("/boards/{id}")
-    public void deleteBoard (@PathVariable Long id) {
+    public String deleteBoard (@PathVariable Long id) {
+        Long boardId = boardService.findBoard(id).getId();
         boardService.deleteBoard(id);
+        return "redirect:/boards/" + boardId;
     }
-
 
 }

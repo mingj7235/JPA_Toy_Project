@@ -27,6 +27,7 @@ public class ReplyApiController {
         return replyService.getReply(id);
     }
 
+    //json 확인용
     @GetMapping ("/replies")
     @ResponseBody
     public Page<ReplyDTO> getAllReplies (Pageable pageable) {
@@ -44,9 +45,8 @@ public class ReplyApiController {
     @DeleteMapping ("/replies/{id}")
     public String deleteReply (@PathVariable Long id) {
         Long boardId = replyService.findReply(id).getBoard().getId();
+
         replyService.deleteReply(id);
         return "redirect:/boards/"+boardId;
     }
-
-
 }
