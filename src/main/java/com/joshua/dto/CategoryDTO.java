@@ -19,7 +19,7 @@ public class CategoryDTO {
     private String code;
     private String name;
     private Long parent_category_id;
-    private Integer level;
+    //private Integer level;
     private boolean live;
     private List<CategoryDTO> children;
 
@@ -28,7 +28,7 @@ public class CategoryDTO {
         this.branch = entity.getBranch();
         this.code = entity.getCode();
         this.name = entity.getName();
-        this.level = entity.getLevel();
+        //this.level = entity.getLevel();
         if(entity.getParentCategory() == null) {
 
         } else {
