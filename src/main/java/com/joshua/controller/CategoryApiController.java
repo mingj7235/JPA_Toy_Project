@@ -18,9 +18,9 @@ public class CategoryApiController {
 
     private final CategoryService categoryService;
 
-    @PostMapping ("/categories/{key}")
+    @PostMapping ("/categories")
     @ResponseBody
-    public Map<String, Category> saveCategory (@PathVariable String key, CategoryDTO categoryDTO) {
+    public Map<String, Category> saveCategory (CategoryDTO categoryDTO) {
         return categoryService.saveCategory(categoryDTO);
     }
 }
