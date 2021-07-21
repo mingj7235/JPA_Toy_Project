@@ -36,6 +36,10 @@ public class ReplyService {
             Reply supReply = replyRepository.findById(supReplyId)
                     .orElseThrow(() -> new IllegalArgumentException("부모 댓글 찾기 오류"));
 
+            if(boardId != supReply.getBoard().getId()) {
+                throw new RuntimeException( "요청게시판과 부모댓글의 게시판이 맞지 않음. " );
+            }
+
             //supReply dead
             if (!supReply.isLive()) {
                 throw new RuntimeException("부모 댓글이 이미 삭제되었습니다. ");
@@ -91,6 +95,12 @@ public class ReplyService {
                     replyRepository.deleteById(reply.getId());
                     break;
                 }
+
+                //예외잡기 -> board 의 num 이 다를 경우
+//                if (reply.getBoard().getId() != superReply.getBoard().getId()) {
+//                    throw new RuntimeException("해당 댓글이 달린 게시판과 부모 댓글달린 게시판이 다름");
+//                } //하지만 필요가 없슴.
+
                 //supReply 있을 경우 supReply에서 찾아서 제거
                 superReply.getSubReply().remove(reply); //이작업 안하니까 오류남
                 replyRepository.deleteById(reply.getId());

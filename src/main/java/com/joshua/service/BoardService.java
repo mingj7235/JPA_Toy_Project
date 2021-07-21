@@ -45,7 +45,6 @@ public class BoardService {
     }
 
     public Page<BoardDTO> getAllBoards (Pageable pageable) {
-
         PageRequest id = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending());
         Page<BoardDTO> boardList = boardRepository.findAll(id).map(BoardDTO::new);
         //Page<BoardDTO> boardList = boardRepository.findAll(pageable)
