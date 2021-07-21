@@ -23,7 +23,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
 
-    public Map<String, Category> saveCategory (CategoryDTO categoryDTO) {
+    public Long saveCategory (CategoryDTO categoryDTO) {
 
         Category category = categoryDTO.toEntity();
 
@@ -44,13 +44,22 @@ public class CategoryService {
         }
 
         category.setLive(true);
-        categoryRepository.save(category);
+        return categoryRepository.save(category).getId();
+    }
 
-        Map<String, Category> categoryMap = new HashMap<>();
+    public Map <String, CategoryDTO> getCategory (Long categoryId) {
 
-        categoryMap.put(category.getCode(), categoryDTO.toEntity());
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("찾는 카테고리 없슴"));
 
-        return categoryMap;
+        CategoryDTO categoryDTO = new CategoryDTO(category);
+
+        Map<String, CategoryDTO> data = new HashMap<>();
+
+        data.put(category.getCode(), categoryDTO);
+        System.out.println(data);
+        return data;
+
     }
 
 
