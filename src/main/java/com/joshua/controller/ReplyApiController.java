@@ -3,6 +3,8 @@ package com.joshua.controller;
 import com.joshua.dto.ReplyDTO;
 import com.joshua.service.ReplyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +21,12 @@ public class ReplyApiController {
     public ReplyDTO getReply (@PathVariable Long id) {
         return replyService.getReply(id);
     }
+
+    @GetMapping ("/replies")
+    public Page<ReplyDTO> getAllReplies (Pageable pageable) {
+        return replyService.getAllReplies(pageable);
+    }
+
 
     @PutMapping ("/replies/{id}")
     public Long updateReply (@PathVariable Long id, ReplyDTO replyDTO) {

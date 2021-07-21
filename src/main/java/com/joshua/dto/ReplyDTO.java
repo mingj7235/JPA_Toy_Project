@@ -28,6 +28,7 @@ public class ReplyDTO {
         this.member_id = entity.getMember().getId();
         this.level = entity.getLevel();
 
+        //null 포인트 잡기
         if (entity.getSuperReply() == null) {
 
         } else {

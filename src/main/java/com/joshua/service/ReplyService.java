@@ -6,6 +6,10 @@ import com.joshua.repository.BoardRepository;
 import com.joshua.repository.MemberRepository;
 import com.joshua.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +61,12 @@ public class ReplyService {
         return new ReplyDTO(reply);
     }
 
+    public Page<ReplyDTO> getAllReplies (Pageable pageable) {
+        PageRequest id = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending());
+        Page<ReplyDTO> replyList = replyRepository.findAll(id).map(ReplyDTO::new);
+        return replyList;
+    }
+
     public Long updateReply (Long id, ReplyDTO replyDTO) {
         Reply reply = findReply(id);
 
@@ -67,25 +77,31 @@ public class ReplyService {
 
 
     public void deleteReply (Long id) {
-        Reply replyToDelete = findReply(id);
-        if(replyToDelete.getSubReply().size() == 0) {
-            while (replyToDelete != null) {
-                Reply superReply = replyToDelete.getSuperReply();
-                if(superReply == null) {
-                    replyRepository.deleteById(replyToDelete.getId());
+        Reply reply = findReply(id);
+
+        if(reply.getSubReply().size() == 0) { //subReply 없을 경우
+
+            while (reply != null) {
+                Reply superReply = reply.getSuperReply();
+
+                if(superReply == null) { //sub도 없고 supReply 없을 경우 즉, 자식 댓글이 없는 supReply일경우는 그냥 삭제
+                    replyRepository.deleteById(reply.getId());
                     break;
                 }
-                superReply.getSubReply().remove(replyToDelete);
-                replyRepository.deleteById(replyToDelete.getId());
+                //supReply 있을 경우 supReply에서 찾아서 제거
+                superReply.getSubReply().remove(reply); //이작업 안하니까 오류남
+                replyRepository.deleteById(reply.getId());
+
+                //while문 빠져나가기 위해 reply를 superReply에 치환
                 if(superReply.getSubReply().size() == 0 && !superReply.isLive()) {
-                    replyToDelete = superReply;
+                    reply = superReply;
                 }
                 else {break;}
             }
         }
-        else if (replyToDelete != null) {
-            replyToDelete.setReplyContent("삭제된 댓글임");
-            replyToDelete.setLive(false);
+        else if (reply != null) {
+            reply.setReplyContent("삭제된 댓글임");
+            reply.setLive(false);
         }
     }
 
