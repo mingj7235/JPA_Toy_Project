@@ -71,11 +71,14 @@ public class CategoryService {
                             .build()
                     );
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>"+rootCategory);
+            System.out.println(rootCategory.getId()); //null 값이 나온다. -> 고로 이것을 save하려면 not-null에 걸린다.
             //ROOT를 중복으로 넣으면 안된다.
             //최초의 경우 : save를 해서 rootCategory를 넣어야 하지만,
             //root가 생성된 후에 새로운 부모 카테고리를 만들게 될경우는 root는 save되면 안된다.
             //orElse자리에 logic을 넣을 수 없다.
-            categoryRepository.save(rootCategory);
+            if (!categoryRepository.existsByBranchAndName(categoryDTO.getBranch(), "ROOT")) {
+                categoryRepository.save(rootCategory);
+            }
             category.setParentCategory(rootCategory);
 
 
