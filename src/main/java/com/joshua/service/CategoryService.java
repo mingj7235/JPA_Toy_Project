@@ -62,24 +62,35 @@ public class CategoryService {
             //ROOT가 없는 경우 (branch 최초)
 
             //orElse로 refactor
-
-
-
-            if (!categoryRepository.existsByBranchAndName(categoryDTO.getBranch(), "ROOT")) {
-                Category rootCategory = categoryDTO.toEntity();
-                rootCategory.setName("ROOT");
-                rootCategory.setLevel(0);
-                rootCategory.setCode("ROOT");
-                categoryRepository.save(rootCategory);
-                category.setParentCategory(rootCategory);
-                //ROOT가 있는 경우
-            } else {
-                Category rootCategory = categoryRepository.findByName("ROOT")
-                        .orElseThrow(() -> new IllegalArgumentException("ROOT 없슴 "));
-                category.setParentCategory(rootCategory);
-            }
+            Category rootCategory = categoryRepository.findByBranchAndName(categoryDTO.getBranch(),"ROOT")
+                    .orElse(
+                            Category.builder()
+                            .name("ROOT")
+                            .code("ROOT")
+                            .level(0)
+                            .build()
+                    );
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>"+rootCategory);
+            //ROOT를 중복으로 넣으면 안된다.
+            categoryRepository.save(rootCategory);
+            category.setParentCategory(rootCategory);
 
             category.setLevel(1);
+
+//            if (!categoryRepository.existsByBranchAndName(categoryDTO.getBranch(), "ROOT")) {
+//                Category rootCategory = categoryDTO.toEntity();
+//                rootCategory.setName("ROOT");
+//                rootCategory.setLevel(0);
+//                rootCategory.setCode("ROOT");
+//                categoryRepository.save(rootCategory);
+//                category.setParentCategory(rootCategory);
+//                //ROOT가 있는 경우
+//            } else {
+//                Category rootCategory = categoryRepository.findByName("ROOT")
+//                        .orElseThrow(() -> new IllegalArgumentException("ROOT 없슴 "));
+//                category.setParentCategory(rootCategory);
+//            }
+
 
             //대분류일 경우, 같은 branch와 name을 가지면 안됌
             // SELECT count(*) from category WHERE branch = :baranch AND name = :name;
@@ -91,13 +102,13 @@ public class CategoryService {
         //중, 소분류 등록
         } else {
             String parentCategoryName = categoryDTO.getParentCategoryName();
-            Category parentCategory = categoryRepository.findByName(parentCategoryName)
+            Category parentCategory = categoryRepository.findByBranchAndName(categoryDTO.getBranch(), parentCategoryName)
                     .orElseThrow(() -> new IllegalArgumentException("부모 카테고리 없음 예외"));
 
             //parent와 children의 branch가 다를 경우
-            if(!parentCategory.getBranch().equals(category.getBranch())) {
-                throw new RuntimeException("부모와 카테고리가 다릅니다. ");
-            }
+//            if(!parentCategory.getBranch().equals(category.getBranch())) {
+//                throw new RuntimeException("부모와 카테고리가 다릅니다. ");
+//            }
 
 //            if (!parentCategory.isLive()) {
 //                throw new RuntimeException("부모 카테고리 찾을 수 없습니다.");

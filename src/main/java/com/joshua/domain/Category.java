@@ -40,10 +40,11 @@ public class Category {
     //private boolean live;
 
     @Builder
-    public Category(String branch, String code, String name, Category parentCategory) {
+    public Category(String branch, String code, String name, Integer level,Category parentCategory) {
         this.branch = branch;
         this.code = code;
         this.name = name;
+        this.level = level;
         this.parentCategory = parentCategory;
     }
 }
