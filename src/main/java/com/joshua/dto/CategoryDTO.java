@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Getter
@@ -21,7 +24,8 @@ public class CategoryDTO {
     private String parentCategoryName;
     //private Integer level;
     //private boolean live;
-    private List<CategoryDTO> children;
+    //private List<CategoryDTO> children;
+    private Map<String, CategoryDTO> children;
 
     public CategoryDTO (Category entity) {
 
@@ -39,8 +43,11 @@ public class CategoryDTO {
             this.parentCategoryName = entity.getParentCategory().getName();
         }
         //this.live = entity.isLive();
-        this.children = entity.getSubCategory().stream()
-                .map(CategoryDTO::new).collect(Collectors.toList());
+        this.children = entity.getSubCategory() == null ? null : entity.getSubCategory().stream().collect(Collectors.toMap(
+                Category::getCode, CategoryDTO::new
+        ));
+
+
     }
 
     public Category toEntity () {

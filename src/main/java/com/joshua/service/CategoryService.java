@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,16 +25,49 @@ public class CategoryService {
 
         Category category = categoryDTO.toEntity();
 
+        //Refector
+        //문제 : 사용자가 branch나 parent name을 오타를 냈을 경우 else로 빠져서 새로운 root를 생성하게 된다.
+
+//        Category parent = categoryRepository.findByBranchAndName(category.getBranch(), categoryDTO.getParentCategoryName()).orElse(
+//                Category.builder()
+//                //parent를 찾기 위해서 repository를 검색하는데, 없다면 대분류를 만드는 것이므로 그위에 root container를 생성.
+//                .branch(category.getBranch())
+//                .code("ROOT")
+//                .name("ROOT")
+//                .build());
+//        category.setParentCategory(parent);
+//        category.setLevel(parent.getLevel() + 1);
+//
+//        try {
+//            parent.getSubCategory().add(categoryRepository.save(category));
+//            categoryRepository.save(parent);
+//        } catch (Exception e) {
+//            throw new RuntimeException("");
+//        }
+//
+//        return category.getId();
+//    }
+
+        //////////////////////////////// saveCategory () Refector 전 코드 /////////////////////////////
         //대분류 등록
         if (categoryDTO.getParentCategoryName() == null) {
+
+            //JPA 사용하여 DB에서 branch와 name의 중복값을 검사. (대분류에서만 가능)
+            if (categoryRepository.existsByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName())) {
+                throw new RuntimeException("branch와 name이 같을 수 없습니다. ");
+            }
+
+            //ROOT 만들기 왜 ROOT를 만들어야 하지?
+
             category.setLevel(1);
 
             //대분류일 경우, 같은 branch와 name을 가지면 안됌
-            for (Category temp : categories()) {
-                if (temp.getBranch().equals(category.getBranch()) && temp.getName().equals(category.getName())){
-                    throw new RuntimeException("branch와 name이 같은 대분류는 있을 수 없습니다.");
-                }
-            }
+            // SELECT count(*) from category WHERE branch = :baranch AND name = :name;
+//            for (Category temp : categories()) {
+//                if (temp.getBranch().equals(category.getBranch()) && temp.getName().equals(category.getName())){
+//                    throw new RuntimeException("branch와 name이 같은 대분류는 있을 수 없습니다.");
+//                }
+//            }
         //중, 소분류 등록
         } else {
             String parentCategoryName = categoryDTO.getParentCategoryName();
@@ -43,7 +77,6 @@ public class CategoryService {
             //parent와 children의 branch가 다를 경우
             if(!parentCategory.getBranch().equals(category.getBranch())) {
                 throw new RuntimeException("부모와 카테고리가 다릅니다. ");
-
             }
 
             if (!parentCategory.isLive()) {
@@ -58,6 +91,7 @@ public class CategoryService {
         category.setLive(true);
         return categoryRepository.save(category).getId();
     }
+////////////////////////////
 
     //카테고리 찾기 #1 : id로 찾기
     public Map <String, CategoryDTO> getCategory (Long categoryId) {

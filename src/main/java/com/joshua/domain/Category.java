@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -32,7 +34,7 @@ public class Category {
 
     @OneToMany (mappedBy = "parentCategory", cascade = CascadeType.ALL)
     private List<Category> subCategory = new ArrayList<>();
-
+    //private Map<String, Category> subCategory = new HashMap<>();
     private Integer level;
 
     private boolean live;
