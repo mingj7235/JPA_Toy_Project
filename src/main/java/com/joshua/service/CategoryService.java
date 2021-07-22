@@ -72,6 +72,9 @@ public class CategoryService {
                     );
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>"+rootCategory);
             //ROOT를 중복으로 넣으면 안된다.
+            //최초의 경우 : save를 해서 rootCategory를 넣어야 하지만,
+            //root가 생성된 후에 새로운 부모 카테고리를 만들게 될경우는 root는 save되면 안된다.
+            //orElse자리에 logic을 넣을 수 없다.
             categoryRepository.save(rootCategory);
             category.setParentCategory(rootCategory);
 
