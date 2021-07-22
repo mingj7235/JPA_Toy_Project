@@ -40,8 +40,9 @@ public class CategoryDTO {
             this.parentCategoryName = entity.getParentCategory().getName();
         }
         //this.live = entity.isLive();
-        this.children = entity.getSubCategory() == null ? null : entity.getSubCategory().stream().collect(Collectors.toMap(
-                Category::getCode, CategoryDTO::new
+        this.children = entity.getSubCategory() == null ? null :
+                entity.getSubCategory().stream().collect(Collectors.toMap(
+                Category::getCode, CategoryDTO::new /* value 값 : category를 CategoryDTO생성자에 넣는것임 */
         ));
 
 
