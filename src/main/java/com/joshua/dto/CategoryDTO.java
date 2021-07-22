@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Id;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,9 +17,10 @@ public class CategoryDTO {
     private String branch;
     private String code;
     private String name;
-    private Long parent_category_id;
+    //private Long parent_category_id;
+    private String parentCategoryName;
     //private Integer level;
-    private boolean live;
+    //private boolean live;
     private List<CategoryDTO> children;
 
     public CategoryDTO (Category entity) {
@@ -30,11 +30,14 @@ public class CategoryDTO {
         this.name = entity.getName();
         //this.level = entity.getLevel();
         if(entity.getParentCategory() == null) {
+           // this.parent_category_id = entity.getId();
+            this.parentCategoryName = entity.getName();
 
         } else {
-            this.parent_category_id = entity.getParentCategory().getId();
+           // this.parent_category_id = entity.getParentCategory().getId();
+            this.parentCategoryName = entity.getParentCategory().getName();
         }
-        this.live = entity.isLive();
+        //this.live = entity.isLive();
         this.children = entity.getSubCategory().stream()
                 .map(CategoryDTO::new).collect(Collectors.toList());
     }
