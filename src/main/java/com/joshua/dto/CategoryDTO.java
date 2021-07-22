@@ -24,6 +24,7 @@ public class CategoryDTO {
     private List<CategoryDTO> children;
 
     public CategoryDTO (Category entity) {
+
         this.categoryId = entity.getId();
         this.branch = entity.getBranch();
         this.code = entity.getCode();
