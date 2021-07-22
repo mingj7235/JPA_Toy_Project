@@ -60,6 +60,11 @@ public class CategoryService {
             //ROOT 만들기 -> 고객이 branch로만 검색햇을 때 root가 나오게 !
 
             //ROOT가 없는 경우 (branch 최초)
+
+            //orElse로 refactor
+
+
+
             if (!categoryRepository.existsByBranchAndName(categoryDTO.getBranch(), "ROOT")) {
                 Category rootCategory = categoryDTO.toEntity();
                 rootCategory.setName("ROOT");
@@ -132,6 +137,18 @@ public class CategoryService {
         CategoryDTO categoryDTO = new CategoryDTO(category);
 
         Map<String, CategoryDTO> data = new HashMap<>();
+        data.put(categoryDTO.getName(), categoryDTO);
+
+        return data;
+    }
+
+    public Map <String, CategoryDTO> getCategoryByBranch (String branch) {
+        Category category = categoryRepository.findByBranchAndName(branch, "ROOT")
+                .orElseThrow(() -> new IllegalArgumentException("찾는 대분류가 없습니다"));
+
+        CategoryDTO categoryDTO = new CategoryDTO(category);
+
+        Map <String, CategoryDTO> data = new HashMap<>();
         data.put(categoryDTO.getName(), categoryDTO);
 
         return data;

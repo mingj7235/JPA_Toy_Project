@@ -24,16 +24,22 @@ public class CategoryApiController {
         return categoryService.saveCategory(categoryDTO);
     }
 
-    @GetMapping ("/categories/{id}")
-    @ResponseBody
-    public Map<String, CategoryDTO> getCategory (@PathVariable Long id) {
-        return categoryService.getCategory(id);
-    }
+//    @GetMapping ("/categories/{id}")
+//    @ResponseBody
+//    public Map<String, CategoryDTO> getCategory (@PathVariable Long id) {
+//        return categoryService.getCategory(id);
+//    }
 
     @GetMapping ("/categories/{branch}/{name}")
     @ResponseBody
     public Map <String, CategoryDTO> getCategoryByBranchAndName (@PathVariable String branch, @PathVariable String name) {
         return categoryService.getCategoryByBranchAndName(branch, name);
+    }
+
+    @GetMapping ("/categories/{branch}")
+    @ResponseBody
+    public Map<String, CategoryDTO> getCategoryByBranch (@PathVariable String branch) {
+        return categoryService.getCategoryByBranch(branch);
     }
 
 }
