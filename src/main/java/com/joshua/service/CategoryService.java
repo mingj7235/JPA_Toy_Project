@@ -57,7 +57,22 @@ public class CategoryService {
                 throw new RuntimeException("branch와 name이 같을 수 없습니다. ");
             }
 
-            //ROOT 만들기 왜 ROOT를 만들어야 하지?
+            //ROOT 만들기 -> 고객이 branch로만 검색햇을 때 root가 나오게 !
+
+            //ROOT가 없는 경우 (branch 최초)
+            if (!categoryRepository.existsByBranchAndName(categoryDTO.getBranch(), "ROOT")) {
+                Category rootCategory = categoryDTO.toEntity();
+                rootCategory.setName("ROOT");
+                rootCategory.setLevel(0);
+                rootCategory.setCode("ROOT");
+                categoryRepository.save(rootCategory);
+                category.setParentCategory(rootCategory);
+                //ROOT가 있는 경우
+            } else {
+                Category rootCategory = categoryRepository.findByName("ROOT")
+                        .orElseThrow(() -> new IllegalArgumentException("ROOT 없슴 "));
+                category.setParentCategory(rootCategory);
+            }
 
             category.setLevel(1);
 
@@ -79,16 +94,16 @@ public class CategoryService {
                 throw new RuntimeException("부모와 카테고리가 다릅니다. ");
             }
 
-            if (!parentCategory.isLive()) {
-                throw new RuntimeException("부모 카테고리 찾을 수 없습니다.");
-            }
+//            if (!parentCategory.isLive()) {
+//                throw new RuntimeException("부모 카테고리 찾을 수 없습니다.");
+//            }
 
             category.setLevel(parentCategory.getLevel() + 1);
             category.setParentCategory(parentCategory);
             parentCategory.getSubCategory().add(category);
         }
 
-        category.setLive(true);
+        //category.setLive(true);
         return categoryRepository.save(category).getId();
     }
 ////////////////////////////
@@ -121,6 +136,8 @@ public class CategoryService {
 
         return data;
     }
+
+
 
 
     public Long updateCategory (Long categoryId, CategoryDTO categoryDTO) {

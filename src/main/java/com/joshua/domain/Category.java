@@ -37,7 +37,7 @@ public class Category {
     //private Map<String, Category> subCategory = new HashMap<>();
     private Integer level;
 
-    private boolean live;
+    //private boolean live;
 
     @Builder
     public Category(String branch, String code, String name, Category parentCategory) {
