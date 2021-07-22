@@ -75,6 +75,8 @@ public class CategoryService {
             categoryRepository.save(rootCategory);
             category.setParentCategory(rootCategory);
 
+
+
             category.setLevel(1);
 
 //            if (!categoryRepository.existsByBranchAndName(categoryDTO.getBranch(), "ROOT")) {
