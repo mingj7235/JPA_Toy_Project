@@ -31,7 +31,7 @@ public class CategoryDTO {
         //this.level = entity.getLevel();
         if(entity.getParentCategory() == null) {
            // this.parent_category_id = entity.getId();
-            this.parentCategoryName = entity.getName();
+            this.parentCategoryName = "대분류";
 
         } else {
            // this.parent_category_id = entity.getParentCategory().getId();

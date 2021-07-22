@@ -4,6 +4,7 @@ import com.joshua.domain.Category;
 import com.joshua.dto.CategoryDTO;
 import com.joshua.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +48,10 @@ public class CategoryService {
             Category parentCategory = categoryRepository.findByName(parentCategoryName)
                     .orElseThrow(() -> new IllegalArgumentException("부모 카테고리 없음 예외"));
 
+            if(!parentCategory.getBranch().equals(category.getBranch())) {
+                throw new RuntimeException("부모와 카테고리가 다릅니다. ");
+            }
+
             if (!parentCategory.isLive()) {
                 throw new RuntimeException("부모 카테고리 찾을 수 없습니다.");
             }
@@ -72,6 +77,19 @@ public class CategoryService {
         data.put(category.getName(), categoryDTO);
         System.out.println(data);
         return data;
+
+    }
+
+    public Long updateCategory (Long categoryId, CategoryDTO categoryDTO) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("카테고리 없슴"));
+
+        category.setName(categoryDTO.getName());
+
+        return category.getId();
+    }
+
+    public void deleteCategory (Long categoryId) {
 
     }
 
