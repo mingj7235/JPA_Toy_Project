@@ -48,6 +48,7 @@ public class CategoryService {
             Category parentCategory = categoryRepository.findByName(parentCategoryName)
                     .orElseThrow(() -> new IllegalArgumentException("부모 카테고리 없음 예외"));
 
+            //parent와 children의 branch가 다를 경우
             if(!parentCategory.getBranch().equals(category.getBranch())) {
                 throw new RuntimeException("부모와 카테고리가 다릅니다. ");
             }
@@ -66,9 +67,13 @@ public class CategoryService {
     }
 
     public Map <String, CategoryDTO> getCategory (Long categoryId) {
+//    public Map <String, CategoryDTO> getCategory (String branch) {
 
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalArgumentException("찾는 카테고리 없슴"));
+        // unique하지 않기때문에 branch로 찾는건 안댐
+//        Category category = categoryRepository.findByBranch(branch)
+//                .orElseThrow(() -> new IllegalArgumentException("찾는 카테고리 없슴"));
 
         CategoryDTO categoryDTO = new CategoryDTO(category);
 
