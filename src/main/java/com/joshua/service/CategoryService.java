@@ -179,11 +179,26 @@ public class CategoryService {
     }
 
     public void deleteCategory (Long categoryId) {
-        //대분류 삭제일경우
         Category category = findCategory(categoryId);
 
-            //소분류가 없을 경우
-        if (category.getSubCategory().size() == 0 ) {
+        //하위 카테고리 여부 상관있을때 (즉, Cascade안할경우 -> 상위 카테고리 삭제시 name 변경 로직)
+        //이 경우에 Category entity에 boolean 타입의 live 필드가 필요하다.
+        if (category.getSubCategory().size() == 0) { //하위 카테고리 없을 경우
+            Category parentCategory = findCategory(category.getParentCategory().getId());
+            if (!parentCategory.getName().equals("ROOT")) { // ROOT가 아닌 다른 부모가 있을 경우
+                parentCategory.getSubCategory().remove(category);
+            }
+            categoryRepository.deleteById(categoryId);
+        } else { //하위 카테고리 있을 경우
+            Category parentCategory = findCategory(category.getParentCategory().getId());
+            //ROOT아닌 부모가 있을 경우
+            if (!parentCategory.getName().equals("ROOT")) {
+                parentCategory.getSubCategory().remove(category);
+            }
+            categoryRepository.deleteById(category.getId());
+            category.setName("Deleted category");
+        }
+    }
 
 //            while (category != null) {
 //                Category parentCategory = category.getParentCategory();
@@ -198,20 +213,8 @@ public class CategoryService {
 //
 //                if (parentCategory.getSubCategory().size() == 0 && )
 //            }
-        }
-
-            //소분류가 있을 경우 -> 삭제 불가 or Cascade로 모두 삭제 (Entity에서는 그렇게 해놓음)
-
-        //중소분류 삭제일 경우
-
-            //자식 분류가 없을 경우
-
-            //자식 분류가 있을 경우 -> 삭제 불가 or Cascade로 모두 삭제 (Entity에서는 그렇게 해놓음)
-
-        //삭제할 대상이 없을경우 ->throw exception
-
-
-    }
+//        }
+//    }
 
     //모든 카테고리 찾기 메소드
     public List<Category> categories () {

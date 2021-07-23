@@ -21,7 +21,7 @@ class CategoryServiceTest {
     CategoryService categoryService;
 
     @Test
-    public void saveCategoryTest () {
+    public void 카테고리_저장_테스트 () {
         //given
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setBranch("TestBranch");
@@ -41,7 +41,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    public void updateCategoryTest () {
+    public void 카테고리_업데이트_테스트 () {
         //given
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setBranch("TestBranch");
@@ -53,14 +53,24 @@ class CategoryServiceTest {
 
         CategoryDTO targetCategory = categoryService
                 .getCategoryByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName()).get(categoryDTO.getName());
-
         targetCategory.setName("UpdateName");
-
         categoryService.updateCategory(targetCategory.getCategoryId(), targetCategory);
 
         //then
-
         assertThat(targetCategory.getName()).isEqualTo("UpdateName");
+    }
 
+    @Test
+    public void 카테고리_삭제_테스트 () {
+        //given
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setBranch("TestBranch");
+        categoryDTO.setCode("TestCode");
+        categoryDTO.setName("TestName");
+        categoryService.saveCategory(categoryDTO);
+
+        //when
+
+        //then
     }
 }
