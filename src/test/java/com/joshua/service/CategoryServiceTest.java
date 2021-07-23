@@ -72,17 +72,19 @@ class CategoryServiceTest {
         categoryService.saveCategory(categoryDTO);
 
         //when
-        CategoryDTO targetCategory = categoryService
-                .getCategoryByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName()).get(categoryDTO.getName());
+//        CategoryDTO targetCategory = categoryService
+//                .getCategoryByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName()).get(categoryDTO.getName());
+        Long categoryId = categoryDTO.getCategoryId();
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+categoryId);
 
-        categoryService.deleteCategory(targetCategory.getCategoryId());
+        categoryService.deleteCategory(categoryId);
         //then
 
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>"+targetCategory.getName());
-        System.out.println("parent : "+targetCategory.getParentCategoryName());
-        System.out.println("subcategory size: " + targetCategory.getChildren().size());
+//        System.out.println(">>>>>>>>>>>>>>>>>>>>>"+targetCategory.getName());
+//        System.out.println("parent : "+targetCategory.getParentCategoryName());
+//        System.out.println("subcategory size: " + targetCategory.getChildren().size());
 
-        assertThat(targetCategory).isNull();
+        assertThat(categoryDTO).isNull();
 
 
     }

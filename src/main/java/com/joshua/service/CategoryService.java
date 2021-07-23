@@ -195,7 +195,8 @@ public class CategoryService {
             if (!parentCategory.getName().equals("ROOT")) {
                 parentCategory.getSubCategory().remove(category);
             }
-            categoryRepository.deleteById(category.getId());
+//            categoryRepository.deleteById(category.getId());
+            category.setName("Deleted category");
         }
 
     }
