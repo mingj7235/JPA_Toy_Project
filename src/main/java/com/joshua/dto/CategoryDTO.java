@@ -45,8 +45,6 @@ public class CategoryDTO {
                 category -> category.getCode(), category -> new CategoryDTO(category)
                         // Category::getCode, CategoryDTO::new /* value 값 : category를 CategoryDTO생성자에 넣는것임 */
         ));
-
-
     }
 
     public Category toEntity () {
@@ -57,5 +55,4 @@ public class CategoryDTO {
                 .name(name)
                 .build();
     }
-
 }

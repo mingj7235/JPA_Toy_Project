@@ -190,6 +190,7 @@ public class CategoryService {
             }
             categoryRepository.deleteById(category.getId());
         } else { //하위 카테고리 있을 경우
+            System.out.println("들어오니?");
             Category parentCategory = findCategory(category.getParentCategory().getId());
             //ROOT아닌 부모가 있을 경우
             if (!parentCategory.getName().equals("ROOT")) {
