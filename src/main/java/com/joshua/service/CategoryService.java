@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.groupingBy;
 
 @Service
@@ -168,9 +169,6 @@ public class CategoryService {
         return data;
     }
 
-
-
-
     public Long updateCategory (Long categoryId, CategoryDTO categoryDTO) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalArgumentException("카테고리 없슴"));
@@ -181,12 +179,48 @@ public class CategoryService {
     }
 
     public void deleteCategory (Long categoryId) {
+        //대분류 삭제일경우
+        Category category = findCategory(categoryId);
+
+            //소분류가 없을 경우
+        if (category.getSubCategory().size() == 0 ) {
+
+//            while (category != null) {
+//                Category parentCategory = category.getParentCategory();
+//
+//                if (parentCategory == null) { //소분류 없는 대분류인경우
+//                    categoryRepository.deleteById(category.getId());
+//                    break;
+//                }
+//
+//                parentCategory.getSubCategory().remove(category);
+//                categoryRepository.deleteById(category.getId());
+//
+//                if (parentCategory.getSubCategory().size() == 0 && )
+//            }
+        }
+
+            //소분류가 있을 경우 -> 삭제 불가 or Cascade로 모두 삭제 (Entity에서는 그렇게 해놓음)
+
+        //중소분류 삭제일 경우
+
+            //자식 분류가 없을 경우
+
+            //자식 분류가 있을 경우 -> 삭제 불가 or Cascade로 모두 삭제 (Entity에서는 그렇게 해놓음)
+
+        //삭제할 대상이 없을경우 ->throw exception
+
 
     }
 
     //모든 카테고리 찾기 메소드
     public List<Category> categories () {
         return categoryRepository.findAll();
+    }
+
+    public Category findCategory (Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("찾는 카테고리 없습"));
     }
 
 }
