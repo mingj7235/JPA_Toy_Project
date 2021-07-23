@@ -3,12 +3,16 @@ package com.joshua.service;
 import com.joshua.domain.Category;
 import com.joshua.dto.CategoryDTO;
 import com.joshua.repository.CategoryRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -23,10 +27,12 @@ class CategoryServiceTest {
 
         //given
         CategoryDTO categoryDTO = new CategoryDTO();
-
+        categoryDTO.setBranch("TestBranch");
+        categoryDTO.setCode("TestCode");
+        categoryDTO.setLevel(1);
+        categoryDTO.setName("TestName");
 
         Category category = categoryDTO.toEntity();
-
 
 
         //when
@@ -35,23 +41,11 @@ class CategoryServiceTest {
 
         //then
 
-        /**
-         * //given
-         *         Member member = new Member();
-         *         member.setName("spring");
-         *
-         *         //when
-         *         Long saveId = memberService.join(member);
-         *
-         *         //then
-         *         Member findMember = memberService.findeOne(saveId).get();
-         *         Assertions.assertThat(member.getName()).isEqualTo(findMember.getName());
-         */
+        Map<String, CategoryDTO> findCategory = categoryService
+                .getCategoryByBranch(categoryDTO.getBranch());
 
+//        assertThat(categoryDTO.getBranch())
+//                .isEqualTo(findCategory.get(categoryDTO.getName()).getBranch());
+        assertThat(saveId).isEqualTo(findCategory.get("TestName").getCategoryId());
     }
-
-
-
-
-
 }
