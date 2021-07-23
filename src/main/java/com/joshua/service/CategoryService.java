@@ -170,14 +170,14 @@ public class CategoryService {
     }
 
     public Long updateCategory (Long categoryId, CategoryDTO categoryDTO) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new IllegalArgumentException("카테고리 없슴"));
+        Category category = findCategory(categoryId);
 
         category.setName(categoryDTO.getName());
 
         return category.getId();
     }
 
+    //카테고리 삭제
     public void deleteCategory (Long categoryId) {
         Category category = findCategory(categoryId);
 
@@ -188,7 +188,7 @@ public class CategoryService {
             if (!parentCategory.getName().equals("ROOT")) { // ROOT가 아닌 다른 부모가 있을 경우
                 parentCategory.getSubCategory().remove(category);
             }
-            categoryRepository.deleteById(categoryId);
+            categoryRepository.deleteById(category.getId());
         } else { //하위 카테고리 있을 경우
             Category parentCategory = findCategory(category.getParentCategory().getId());
             //ROOT아닌 부모가 있을 경우
@@ -196,8 +196,8 @@ public class CategoryService {
                 parentCategory.getSubCategory().remove(category);
             }
             categoryRepository.deleteById(category.getId());
-            category.setName("Deleted category");
         }
+
     }
 
 //            while (category != null) {
@@ -221,6 +221,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    //카테고리 하나 찾아오기 메소드
     public Category findCategory (Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("찾는 카테고리 없습"));

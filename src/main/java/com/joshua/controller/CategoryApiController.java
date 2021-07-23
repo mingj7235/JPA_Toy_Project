@@ -45,6 +45,13 @@ public class CategoryApiController {
         return categoryService.updateCategory(categoryId,categoryDTO);
     }
 
+    @DeleteMapping ("/categories/{categoryId}")
+    @ResponseBody
+    public void deleteCategory (@PathVariable Long categoryId) {
+        categoryService.deleteCategory(categoryId);
+
+    }
+
 
 
 }

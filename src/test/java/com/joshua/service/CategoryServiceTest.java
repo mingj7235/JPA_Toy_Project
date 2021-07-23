@@ -19,6 +19,8 @@ import static org.assertj.core.api.Assertions.*;
 class CategoryServiceTest {
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Test
     public void 카테고리_저장_테스트 () {
@@ -61,7 +63,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    public void 카테고리_삭제_테스트 () {
+    public void 카테고리_삭제_테스트_대분류 () {
         //given
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setBranch("TestBranch");
@@ -70,7 +72,18 @@ class CategoryServiceTest {
         categoryService.saveCategory(categoryDTO);
 
         //when
+        CategoryDTO targetCategory = categoryService
+                .getCategoryByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName()).get(categoryDTO.getName());
 
+        categoryService.deleteCategory(targetCategory.getCategoryId());
         //then
+
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>"+targetCategory.getName());
+        System.out.println("parent : "+targetCategory.getParentCategoryName());
+        System.out.println("subcategory size: " + targetCategory.getChildren().size());
+
+        assertThat(targetCategory).isNull();
+
+
     }
 }
