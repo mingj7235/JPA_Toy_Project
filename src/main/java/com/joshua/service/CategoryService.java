@@ -155,6 +155,7 @@ public class CategoryService {
         return data;
     }
 
+    //카테고리 찾기 #3 : branch로만 찾기
     public Map <String, CategoryDTO> getCategoryByBranch (String branch) {
         Category category = categoryRepository.findByBranchAndName(branch, "ROOT")
                 .orElseThrow(() -> new IllegalArgumentException("찾는 대분류가 없습니다"));

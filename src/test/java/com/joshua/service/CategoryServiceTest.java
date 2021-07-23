@@ -26,14 +26,11 @@ class CategoryServiceTest {
     public void saveCategoryTest () {
 
         //given
+
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setBranch("TestBranch");
         categoryDTO.setCode("TestCode");
-        categoryDTO.setLevel(1);
         categoryDTO.setName("TestName");
-
-        Category category = categoryDTO.toEntity();
-
 
         //when
 
@@ -42,10 +39,8 @@ class CategoryServiceTest {
         //then
 
         Map<String, CategoryDTO> findCategory = categoryService
-                .getCategoryByBranch(categoryDTO.getBranch());
+                .getCategoryByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName());
 
-//        assertThat(categoryDTO.getBranch())
-//                .isEqualTo(findCategory.get(categoryDTO.getName()).getBranch());
         assertThat(saveId).isEqualTo(findCategory.get("TestName").getCategoryId());
     }
 }
