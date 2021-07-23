@@ -69,22 +69,17 @@ class CategoryServiceTest {
         categoryDTO.setBranch("TestBranch");
         categoryDTO.setCode("TestCode");
         categoryDTO.setName("TestName");
-        categoryService.saveCategory(categoryDTO);
+        Long targetId = categoryService.saveCategory(categoryDTO);
 
         //when
-//        CategoryDTO targetCategory = categoryService
-//                .getCategoryByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName()).get(categoryDTO.getName());
-        Long categoryId = categoryDTO.getCategoryId();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+categoryId);
 
-        categoryService.deleteCategory(categoryId);
+        categoryService.deleteCategory(targetId);
+
         //then
 
-//        System.out.println(">>>>>>>>>>>>>>>>>>>>>"+targetCategory.getName());
-//        System.out.println("parent : "+targetCategory.getParentCategoryName());
-//        System.out.println("subcategory size: " + targetCategory.getChildren().size());
-
-        assertThat(categoryDTO).isNull();
+        IllegalArgumentException e =
+                assertThrows(IllegalArgumentException.class, () -> categoryService.findCategory(targetId));
+        assertThat(e.getMessage()).isEqualTo("찾는 카테고리 없습니다.");
 
 
     }

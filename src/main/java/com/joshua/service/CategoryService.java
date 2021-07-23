@@ -201,21 +201,6 @@ public class CategoryService {
 
     }
 
-//            while (category != null) {
-//                Category parentCategory = category.getParentCategory();
-//
-//                if (parentCategory == null) { //소분류 없는 대분류인경우
-//                    categoryRepository.deleteById(category.getId());
-//                    break;
-//                }
-//
-//                parentCategory.getSubCategory().remove(category);
-//                categoryRepository.deleteById(category.getId());
-//
-//                if (parentCategory.getSubCategory().size() == 0 && )
-//            }
-//        }
-//    }
 
     //모든 카테고리 찾기 메소드
     public List<Category> categories () {
@@ -225,7 +210,7 @@ public class CategoryService {
     //카테고리 하나 찾아오기 메소드
     public Category findCategory (Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("찾는 카테고리 없습"));
+                .orElseThrow(() -> new IllegalArgumentException("찾는 카테고리 없습니다."));
     }
 
 }
