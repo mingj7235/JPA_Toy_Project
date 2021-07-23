@@ -19,14 +19,10 @@ import static org.assertj.core.api.Assertions.*;
 class CategoryServiceTest {
     @Autowired
     CategoryService categoryService;
-    @Autowired
-    CategoryRepository categoryRepository;
 
     @Test
     public void saveCategoryTest () {
-
         //given
-
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setBranch("TestBranch");
         categoryDTO.setCode("TestCode");
@@ -42,5 +38,29 @@ class CategoryServiceTest {
                 .getCategoryByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName());
 
         assertThat(saveId).isEqualTo(findCategory.get("TestName").getCategoryId());
+    }
+
+    @Test
+    public void updateCategoryTest () {
+        //given
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setBranch("TestBranch");
+        categoryDTO.setCode("TestCode");
+        categoryDTO.setName("TestName");
+        categoryService.saveCategory(categoryDTO);
+
+        //when
+
+        CategoryDTO targetCategory = categoryService
+                .getCategoryByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName()).get(categoryDTO.getName());
+
+        targetCategory.setName("UpdateName");
+
+        categoryService.updateCategory(targetCategory.getCategoryId(), targetCategory);
+
+        //then
+
+        assertThat(targetCategory.getName()).isEqualTo("UpdateName");
+
     }
 }

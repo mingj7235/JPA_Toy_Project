@@ -5,10 +5,7 @@ import com.joshua.dto.CategoryDTO;
 import com.joshua.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -41,5 +38,13 @@ public class CategoryApiController {
     public Map<String, CategoryDTO> getCategoryByBranch (@PathVariable String branch) {
         return categoryService.getCategoryByBranch(branch);
     }
+
+    @PutMapping ("/categories/{categoryId}")
+    @ResponseBody
+    public Long updateCategory (@PathVariable Long categoryId, CategoryDTO categoryDTO) {
+        return categoryService.updateCategory(categoryId,categoryDTO);
+    }
+
+
 
 }
