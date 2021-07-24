@@ -42,6 +42,7 @@ class CategoryServiceTest {
         assertThat(saveId).isEqualTo(findCategory.get("TestName").getCategoryId());
     }
 
+
     @Test
     public void 카테고리_업데이트_테스트 () {
         //given

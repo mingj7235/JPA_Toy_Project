@@ -19,11 +19,11 @@ public class Rereply {
     private String reReplyTitle;
     private String reReplyContent;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "REPLY_ID")
     private Reply reply;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "MEMBER_ID")
     private Member member;
 

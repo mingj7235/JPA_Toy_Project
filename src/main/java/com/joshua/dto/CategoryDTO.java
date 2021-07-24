@@ -38,6 +38,7 @@ public class CategoryDTO {
         } else {
            // this.parent_category_id = entity.getParentCategory().getId();
             this.parentCategoryName = entity.getParentCategory().getName();
+
         }
         //this.live = entity.isLive();
         this.children = entity.getSubCategory() == null ? null :
