@@ -1,8 +1,6 @@
 package com.joshua.service;
 
-import com.joshua.domain.Board;
 import com.joshua.domain.Member;
-import com.joshua.dto.BoardDTO;
 import com.joshua.dto.MemberDTO;
 import com.joshua.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
