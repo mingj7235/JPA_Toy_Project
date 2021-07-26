@@ -14,6 +14,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Boolean existsByBranchAndName(String branch, String name);
 
-    @Query (value = "SELECT MAX(c.level) FROM category c WHERE c.branch = :branch")
+    //Category는 객체명이므로 앞이 대문자여야한다.
+    @Query (value = "SELECT MAX(c.level) FROM Category c WHERE c.branch = :branch")
     Long maxLevel (@Param("branch") String branch);
 }

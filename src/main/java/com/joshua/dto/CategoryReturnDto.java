@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-//@Builder
+@Builder
 public class CategoryReturnDto {
 
     private Long max_level;

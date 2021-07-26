@@ -178,19 +178,12 @@ public class CategoryService {
                 .orElseThrow( () -> new IllegalArgumentException("찾는 카테고리가 없습니다."));
 
         CategoryDTO categoryDTO = new CategoryDTO(category);
-
-        Map<String, CategoryDTO> data = new HashMap<>();
-        data.put(category.getCode(), categoryDTO);
-
-        CategoryReturnDto categoryReturnDto = new CategoryReturnDto();
-
         Long max_level = categoryRepository.maxLevel(branch);
 
-        categoryReturnDto.setMax_level(max_level);
-        categoryReturnDto.setCategories(data);
-
-        return categoryReturnDto;
-
+        return CategoryReturnDto.builder()
+                .max_level(max_level)
+                .categories(categoryDTO.getChildren())
+                .build();
     }
 
     //update

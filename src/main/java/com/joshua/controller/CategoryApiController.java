@@ -2,6 +2,7 @@ package com.joshua.controller;
 
 import com.joshua.domain.Category;
 import com.joshua.dto.CategoryDTO;
+import com.joshua.dto.CategoryReturnDto;
 import com.joshua.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -35,10 +36,9 @@ public class CategoryApiController {
 
     @GetMapping ("/categories/{branch}")
     @ResponseBody
-    public Map<String, CategoryDTO> getCategoryByBranch (@PathVariable String branch) {
-        //branch명으로만 조회 dddd
-        return categoryService.getCategoryByBranch(branch);
-
+    public CategoryReturnDto getCategoryByBranch (@PathVariable String branch) {
+        //branch명으로만 조회
+        return categoryService.getCategoryByBranchWithLevel(branch);
     }
 
     @PutMapping ("/categories/{categoryId}")
