@@ -36,7 +36,7 @@ public class CategoryApiController {
     @GetMapping ("/categories/{branch}")
     @ResponseBody
     public Map<String, CategoryDTO> getCategoryByBranch (@PathVariable String branch) {
-        //branch명으로만 조회
+        //branch명으로만 조회 dddd
         return categoryService.getCategoryByBranch(branch);
 
     }
