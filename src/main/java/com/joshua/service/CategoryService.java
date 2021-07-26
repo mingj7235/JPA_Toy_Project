@@ -51,7 +51,7 @@ public class CategoryService {
 
         //////////////////////////////// saveCategory () Refector 전 코드 /////////////////////////////
         //대분류 등록
-        if (categoryDTO.getParentCategoryName() == null) {
+        if (categoryDTO.getParentCategoryCode() == null) {
 
             //JPA 사용하여 DB에서 branch와 name의 중복값을 검사. (대분류에서만 가능)
             if (categoryRepository.existsByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName())) {
@@ -63,7 +63,7 @@ public class CategoryService {
             //ROOT가 없는 경우 (branch 최초)
 
             //orElse로 refactor
-            Category rootCategory = categoryRepository.findByBranchAndName(categoryDTO.getBranch(),"ROOT")
+            Category rootCategory = categoryRepository.findByBranchAndCode(categoryDTO.getBranch(),"ROOT")
                     .orElseGet( () ->
                             Category.builder()
                             .name("ROOT")
@@ -104,8 +104,8 @@ public class CategoryService {
 //            }
         //중, 소분류 등록
         } else {
-            String parentCategoryName = categoryDTO.getParentCategoryName();
-            Category parentCategory = categoryRepository.findByBranchAndName(categoryDTO.getBranch(), parentCategoryName)
+            String parentCategoryCode = categoryDTO.getParentCategoryCode();
+            Category parentCategory = categoryRepository.findByBranchAndCode(categoryDTO.getBranch(), parentCategoryCode)
                     .orElseThrow(() -> new IllegalArgumentException("부모 카테고리 없음 예외"));
 
             //parent와 children의 branch가 다를 경우
@@ -144,21 +144,21 @@ public class CategoryService {
     }
 
     //카테고리 찾기 #2 : branch와 name으로 찾기
-    public Map <String, CategoryDTO> getCategoryByBranchAndName(String branch, String name) {
-        Category category = categoryRepository.findByBranchAndName(branch, name)
-                .orElseThrow(() -> new IllegalArgumentException("찾는 대분류 없슴"));
-
-        CategoryDTO categoryDTO = new CategoryDTO(category);
-
-        Map<String, CategoryDTO> data = new HashMap<>();
-        data.put(categoryDTO.getName(), categoryDTO);
-
-        return data;
-    }
+//    public Map <String, CategoryDTO> getCategoryByBranchAndName(String branch, String name) {
+//        Category category = categoryRepository.findByBranchAndName(branch, name)
+//                .orElseThrow(() -> new IllegalArgumentException("찾는 대분류 없슴"));
+//
+//        CategoryDTO categoryDTO = new CategoryDTO(category);
+//
+//        Map<String, CategoryDTO> data = new HashMap<>();
+//        data.put(categoryDTO.getName(), categoryDTO);
+//
+//        return data;
+//    }
 
     //카테고리 찾기 #3 : branch로만 찾기
     public Map <String, CategoryDTO> getCategoryByBranch (String branch) {
-        Category category = categoryRepository.findByBranchAndName(branch, "ROOT")
+        Category category = categoryRepository.findByBranchAndCode(branch, "ROOT")
                 .orElseThrow(() -> new IllegalArgumentException("찾는 대분류가 없습니다"));
 
         CategoryDTO categoryDTO = new CategoryDTO(category);

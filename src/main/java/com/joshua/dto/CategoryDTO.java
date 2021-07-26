@@ -18,7 +18,8 @@ public class CategoryDTO {
     private String code;
     private String name;
     //private Long parent_category_id;
-    private String parentCategoryName;
+    //private String parentCategoryName;
+    private String parentCategoryCode;
     private Integer level;
     //private boolean live;
     //private List<CategoryDTO> children;
@@ -32,12 +33,12 @@ public class CategoryDTO {
         this.name = entity.getName();
         this.level = entity.getLevel();
         if(entity.getParentCategory() == null) {
-           // this.parent_category_id = entity.getId();
-            this.parentCategoryName = "대분류";
+            //this.parentCategoryName = "대분류";
+            this.parentCategoryCode = entity.getCode();
 
         } else {
-           // this.parent_category_id = entity.getParentCategory().getId();
-            this.parentCategoryName = entity.getParentCategory().getName();
+            //this.parentCategoryName = entity.getParentCategory().getName();
+            this.parentCategoryCode = entity.getParentCategory().getCode();
 
         }
         //this.live = entity.isLive();

@@ -27,11 +27,11 @@ public class CategoryApiController {
 //        return categoryService.getCategory(id);
 //    }
 
-    @GetMapping ("/categories/{branch}/{name}")
-    @ResponseBody
-    public Map <String, CategoryDTO> getCategoryByBranchAndName (@PathVariable String branch, @PathVariable String name) {
-        return categoryService.getCategoryByBranchAndName(branch, name);
-    }
+//    @GetMapping ("/categories/{branch}/{name}")
+//    @ResponseBody
+//    public Map <String, CategoryDTO> getCategoryByBranchAndName (@PathVariable String branch, @PathVariable String name) {
+//        return categoryService.getCategoryByBranchAndName(branch, name);
+//    }
 
     @GetMapping ("/categories/{branch}")
     @ResponseBody

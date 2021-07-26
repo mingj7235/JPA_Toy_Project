@@ -37,7 +37,7 @@ class CategoryServiceTest {
         //then
 
         Map<String, CategoryDTO> findCategory = categoryService
-                .getCategoryByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName());
+                .getCategoryByBranch(categoryDTO.getBranch());
 
         assertThat(saveId).isEqualTo(findCategory.get("TestName").getCategoryId());
     }
@@ -56,7 +56,7 @@ class CategoryServiceTest {
         //when
 
         CategoryDTO targetCategory = categoryService
-                .getCategoryByBranchAndName(categoryDTO.getBranch(), categoryDTO.getName()).get(categoryDTO.getName());
+                .getCategoryByBranch(categoryDTO.getBranch()).get(categoryDTO.getName());
         targetCategory.setName("UpdateName");
         categoryService.updateCategory(targetCategory.getCategoryId(), targetCategory);
 
@@ -98,7 +98,7 @@ class CategoryServiceTest {
         childCategory.setBranch("branch");
         childCategory.setCode("child");
         childCategory.setName("child");
-        childCategory.setParentCategoryName("parent");
+        //childCategory.setParentCategoryName("parent");
         Long childId = categoryService.saveCategory(childCategory);
 
         //when
