@@ -2,6 +2,7 @@ package com.joshua.service;
 
 import com.joshua.domain.Category;
 import com.joshua.dto.CategoryDTO;
+import com.joshua.dto.CategoryReturnDto;
 import com.joshua.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -169,6 +170,30 @@ public class CategoryService {
         return data;
     }
 
+    //카테고리 찾기 #4 : branch로만 찾고, 최상위 값에 가장 끝단 level도 알려주기
+
+    public CategoryReturnDto getCategoryByBranchWithLevel (String branch) {
+
+        Category category = categoryRepository.findByBranchAndCode(branch, "ROOT")
+                .orElseThrow( () -> new IllegalArgumentException("찾는 카테고리가 없습니다."));
+
+        CategoryDTO categoryDTO = new CategoryDTO(category);
+
+        Map<String, CategoryDTO> data = new HashMap<>();
+        data.put(category.getCode(), categoryDTO);
+
+        CategoryReturnDto categoryReturnDto = new CategoryReturnDto();
+
+        Long max_level = categoryRepository.maxLevel(branch);
+
+        categoryReturnDto.setMax_level(max_level);
+        categoryReturnDto.setCategories(data);
+
+        return categoryReturnDto;
+
+    }
+
+    //update
     public Long updateCategory (Long categoryId, CategoryDTO categoryDTO) {
         Category category = findCategory(categoryId);
 
