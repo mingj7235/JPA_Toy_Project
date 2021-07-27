@@ -173,7 +173,7 @@ public class CategoryService {
 
     public CategoryReturnDto getCategoryByBranchWithLevel (String branch) {
 
-        Category category = findCategory(branch, "ROOT")
+        Category category = findCategory(branch, "ROOT");
 
         CategoryDTO categoryDTO = new CategoryDTO(category);
         Long max_level = categoryRepository.maxLevel(branch);

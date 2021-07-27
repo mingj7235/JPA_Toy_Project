@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Map;
 
 @Controller
@@ -41,16 +42,19 @@ public class CategoryApiController {
         return categoryService.getCategoryByBranchWithLevel(branch);
     }
 
-    @PutMapping ("/categories/{categoryId}")
+    @PutMapping ("/categories/{branch}/{code}")
     @ResponseBody
-    public Long updateCategory (@PathVariable Long categoryId, CategoryDTO categoryDTO) {
-        return categoryService.updateCategory(categoryId,categoryDTO);
+    public Long updateCategory (@PathVariable (name = "branch") @NotBlank String branch,
+                                @PathVariable (name = "code") @NotBlank String code,
+                                CategoryDTO categoryDTO) {
+        return categoryService.updateCategory(branch, code,categoryDTO);
     }
 
     @DeleteMapping ("/categories/{categoryId}")
     @ResponseBody
-    public void deleteCategory (@PathVariable Long categoryId) {
-        categoryService.deleteCategory(categoryId);
+    public void deleteCategory (@PathVariable (name = "branch") @NotBlank String branch,
+                                @PathVariable (name = "code") @NotBlank String code) {
+        categoryService.deleteCategory(branch, code);
 
     }
 
