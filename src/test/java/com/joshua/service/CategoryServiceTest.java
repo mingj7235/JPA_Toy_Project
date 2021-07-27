@@ -58,7 +58,7 @@ class CategoryServiceTest {
         CategoryDTO targetCategory = categoryService
                 .getCategoryByBranch(categoryDTO.getBranch()).get(categoryDTO.getName());
         targetCategory.setName("UpdateName");
-        categoryService.updateCategory(targetCategory.getCategoryId(), targetCategory);
+        categoryService.updateCategory(targetCategory.getBranch(),targetCategory.getCode(), targetCategory);
 
         //then
         assertThat(targetCategory.getName()).isEqualTo("UpdateName");
@@ -75,12 +75,12 @@ class CategoryServiceTest {
 
         //when
 
-        categoryService.deleteCategory(targetId);
+        categoryService.deleteCategoryOld(targetId);
 
         //then
 
         IllegalArgumentException e =
-                assertThrows(IllegalArgumentException.class, () -> categoryService.findCategory(targetId));
+                assertThrows(IllegalArgumentException.class, () -> categoryService.findCategoryOld(targetId));
         assertThat(e.getMessage()).isEqualTo("찾는 카테고리 없습니다.");
 
     }
@@ -103,9 +103,9 @@ class CategoryServiceTest {
 
         //when
 
-        categoryService.deleteCategory(parentId);
+        categoryService.deleteCategoryOld(parentId);
 
-        String targetMame = categoryService.findCategory(parentId).getName();
+        String targetMame = categoryService.findCategoryOld(parentId).getName();
 
         //then
         //assertThat(parentCategory.getName()).isEqualTo("Deleted category");

@@ -159,8 +159,7 @@ public class CategoryService {
 
     //카테고리 찾기 #3 : branch로만 찾기
     public Map <String, CategoryDTO> getCategoryByBranch (String branch) {
-        Category category = categoryRepository.findByBranchAndCode(branch, "ROOT")
-                .orElseThrow(() -> new IllegalArgumentException("찾는 대분류가 없습니다"));
+        Category category = findCategory(branch, "ROOT");
 
         CategoryDTO categoryDTO = new CategoryDTO(category);
 
@@ -174,8 +173,7 @@ public class CategoryService {
 
     public CategoryReturnDto getCategoryByBranchWithLevel (String branch) {
 
-        Category category = categoryRepository.findByBranchAndCode(branch, "ROOT")
-                .orElseThrow( () -> new IllegalArgumentException("찾는 카테고리가 없습니다."));
+        Category category = findCategory(branch, "ROOT")
 
         CategoryDTO categoryDTO = new CategoryDTO(category);
         Long max_level = categoryRepository.maxLevel(branch);
@@ -187,8 +185,8 @@ public class CategoryService {
     }
 
     //update
-    public Long updateCategory (Long categoryId, CategoryDTO categoryDTO) {
-        Category category = findCategory(categoryId);
+    public Long updateCategory (String branch, String code, CategoryDTO categoryDTO) {
+        Category category = findCategory(branch, code);
 
         category.setName(categoryDTO.getName());
 
@@ -196,20 +194,20 @@ public class CategoryService {
     }
 
     //카테고리 삭제
-    public void deleteCategory (Long categoryId) {
-        Category category = findCategory(categoryId);
+    public void deleteCategoryOld (Long categoryId) {
+        Category category = findCategoryOld(categoryId);
 
         //하위 카테고리 여부 상관있을때 (즉, Cascade안할경우 -> 상위 카테고리 삭제시 name 변경 로직)
         //이 경우에 Category entity에 boolean 타입의 live 필드가 필요하다.
         if (category.getSubCategory().size() == 0) { //하위 카테고리 없을 경우
-            Category parentCategory = findCategory(category.getParentCategory().getId());
+            Category parentCategory = findCategoryOld(category.getParentCategory().getId());
             if (!parentCategory.getName().equals("ROOT")) { // ROOT가 아닌 다른 부모가 있을 경우
                 parentCategory.getSubCategory().remove(category);
             }
             categoryRepository.deleteById(category.getId());
         } else { //하위 카테고리 있을 경우
             System.out.println("들어오니?");
-            Category parentCategory = findCategory(category.getParentCategory().getId());
+            Category parentCategory = findCategoryOld(category.getParentCategory().getId());
             //ROOT아닌 부모가 있을 경우
             if (!parentCategory.getName().equals("ROOT")) {
                 parentCategory.getSubCategory().remove(category);
@@ -220,6 +218,26 @@ public class CategoryService {
 
     }
 
+    public int deleteCategory (String branch, String code) {
+        int result = 0;
+        Category category = findCategory(branch, code);
+
+        if (category.getSubCategory().size() == 0) { //하위 카테고리가 없을 경우
+            if (!category.getParentCategory().getCode().equals("ROOT")) {
+                Category parentCategory = findCategory(category.getParentCategory().getBranch(), category.getParentCategory().getCode());
+                parentCategory.getSubCategory().remove(category);
+            }
+
+            result = categoryRepository.deleteByBranchAndCode(category.getBranch(), category.getCode());
+
+        } else { //하위 카테고리가 있을 경우 삭제하지 않고 code만 바꿔 놓음.
+            category.setCode("Deleted Category - " + category.getCode());
+            result = 2;
+        }
+        return result;
+    }
+
+
 
     //모든 카테고리 찾기 메소드
     public List<Category> categories () {
@@ -227,9 +245,14 @@ public class CategoryService {
     }
 
     //카테고리 하나 찾아오기 메소드
-    public Category findCategory (Long id) {
+    public Category findCategoryOld (Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("찾는 카테고리 없습니다."));
+    }
+
+    private Category findCategory (String branch, String code) {
+        return categoryRepository.findByBranchAndCode(branch, code)
+                .orElseThrow(() -> new IllegalArgumentException("카테고리를 찾을 수 없습니다. "));
     }
 
 }
