@@ -3,13 +3,10 @@ package com.joshua.service;
 import com.joshua.domain.Category;
 import com.joshua.dto.CategoryDTO;
 import com.joshua.repository.CategoryRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
@@ -25,62 +22,49 @@ class CategoryServiceTest {
     @Test
     public void 카테고리_저장_테스트 () {
         //given
-        CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setBranch("TestBranch");
-        categoryDTO.setCode("TestCode");
-        categoryDTO.setName("TestName");
+        CategoryDTO categoryDTO = createCategoryDTO("TestBranch", "TestCode", "TestName");
+        Long savedId = categoryService.saveCategory(categoryDTO);
 
         //when
-
-        Long saveId = categoryService.saveCategory(categoryDTO);
+        Category category = findCategory(savedId);
 
         //then
+        assertThat(category.getCode()).isEqualTo("TestCode");
 
-        Map<String, CategoryDTO> findCategory = categoryService
-                .getCategoryByBranch(categoryDTO.getBranch());
-
-        assertThat(saveId).isEqualTo(findCategory.get("TestName").getCategoryId());
     }
 
 
     @Test
     public void 카테고리_업데이트_테스트 () {
         //given
-        CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setBranch("TestBranch");
-        categoryDTO.setCode("TestCode");
-        categoryDTO.setName("TestName");
-        categoryService.saveCategory(categoryDTO);
+        CategoryDTO categoryDTO = createCategoryDTO("TestBranch", "TestCode", "TestName");
+        Long savedId = categoryService.saveCategory(categoryDTO);
 
-
+        Category category = findCategory(savedId);
+        CategoryDTO targetCategory = new CategoryDTO(category);
+        targetCategory.setName("UpdateCategory");
         //when
 
-        CategoryDTO targetCategory = categoryService
-                .getCategoryByBranch(categoryDTO.getBranch()).get(categoryDTO.getName());
-        targetCategory.setName("UpdateName");
-        categoryService.updateCategory(targetCategory.getBranch(),targetCategory.getCode(), targetCategory);
+        Long updateId = categoryService.updateCategory("TestBranch", "TestCode", targetCategory);
+        Category updatedCategory = findCategory(updateId);
 
         //then
-        assertThat(targetCategory.getName()).isEqualTo("UpdateName");
+        assertThat(updatedCategory.getName()).isEqualTo("UpdateCategory");
     }
 
     @Test
     public void 카테고리_삭제_테스트_대분류 () {
         //given
-        CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setBranch("TestBranch");
-        categoryDTO.setCode("TestCode");
-        categoryDTO.setName("TestName");
-        Long targetId = categoryService.saveCategory(categoryDTO);
-
+        CategoryDTO categoryDTO = createCategoryDTO("TestBranch", "TestCode", "TestName");
+        Long savedId = categoryService.saveCategory(categoryDTO);
         //when
 
-        categoryService.deleteCategoryOld(targetId);
+        categoryService.deleteCategoryOld(savedId);
 
         //then
 
         IllegalArgumentException e =
-                assertThrows(IllegalArgumentException.class, () -> categoryService.findCategoryOld(targetId));
+                assertThrows(IllegalArgumentException.class, () -> categoryService.findCategoryOld(savedId));
         assertThat(e.getMessage()).isEqualTo("찾는 카테고리 없습니다.");
 
     }
@@ -88,30 +72,36 @@ class CategoryServiceTest {
     @Test
     public void 카테고리_삭제_테스트_소분류() {
         //given
-        CategoryDTO parentCategory = new CategoryDTO();
-        parentCategory.setBranch("branch");
-        parentCategory.setCode("parent");
-        parentCategory.setName("parent");
-        Long parentId = categoryService.saveCategory(parentCategory);
+//        Long parentId = getSavedId("branch", "parent", "parent");
+//
+//        Long childId = getSavedId("branch", "child", "child");
+//
+//        //when
+//
+//        categoryService.deleteCategoryOld(parentId);
+//
+//        String targetMame = categoryService.findCategoryOld(parentId).getName();
+//
+//        //then
+//        //assertThat(parentCategory.getName()).isEqualTo("Deleted category");
+//        //이건 dto의 name이기때문에 service에서 바꾼 setName은 Entity를 변화시킨 것이므로
+//        //당연히 못찾는다.
+//
+//        assertThat(targetMame).isEqualTo("Deleted category");
+    }
 
-        CategoryDTO childCategory = new CategoryDTO();
-        childCategory.setBranch("branch");
-        childCategory.setCode("child");
-        childCategory.setName("child");
-        //childCategory.setParentCategoryName("parent");
-        Long childId = categoryService.saveCategory(childCategory);
+    //SavedID
+    private CategoryDTO createCategoryDTO(String testBranch, String testCode, String testName) {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setBranch(testBranch);
+        categoryDTO.setCode(testCode);
+        categoryDTO.setName(testName);
+        return categoryDTO;
+    }
 
-        //when
+    //Find Category
 
-        categoryService.deleteCategoryOld(parentId);
-
-        String targetMame = categoryService.findCategoryOld(parentId).getName();
-
-        //then
-        //assertThat(parentCategory.getName()).isEqualTo("Deleted category");
-        //이건 dto의 name이기때문에 service에서 바꾼 setName은 Entity를 변화시킨 것이므로
-        //당연히 못찾는다.
-
-        assertThat(targetMame).isEqualTo("Deleted category");
+    private Category findCategory (Long savedId) {
+        return categoryRepository.findById(savedId).orElseThrow(IllegalArgumentException::new);
     }
 }
