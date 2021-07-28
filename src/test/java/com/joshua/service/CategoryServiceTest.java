@@ -19,6 +19,21 @@ class CategoryServiceTest {
     @Autowired
     CategoryRepository categoryRepository;
 
+    //SavedID
+    private CategoryDTO createCategoryDTO(String testBranch, String testCode, String testName) {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setBranch(testBranch);
+        categoryDTO.setCode(testCode);
+        categoryDTO.setName(testName);
+        return categoryDTO;
+    }
+
+    //Find Category
+
+    private Category findCategory (Long savedId) {
+        return categoryRepository.findById(savedId).orElseThrow(IllegalArgumentException::new);
+    }
+
     @Test
     public void 카테고리_저장_테스트 () {
         //given
@@ -53,7 +68,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    public void 카테고리_삭제_테스트_대분류 () {
+    public void 카테고리_삭제_테스트 () {
         //given
         CategoryDTO categoryDTO = createCategoryDTO("TestBranch", "TestCode", "TestName");
         Long savedId = categoryService.saveCategory(categoryDTO);
@@ -88,20 +103,5 @@ class CategoryServiceTest {
 //        //당연히 못찾는다.
 //
 //        assertThat(targetMame).isEqualTo("Deleted category");
-    }
-
-    //SavedID
-    private CategoryDTO createCategoryDTO(String testBranch, String testCode, String testName) {
-        CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setBranch(testBranch);
-        categoryDTO.setCode(testCode);
-        categoryDTO.setName(testName);
-        return categoryDTO;
-    }
-
-    //Find Category
-
-    private Category findCategory (Long savedId) {
-        return categoryRepository.findById(savedId).orElseThrow(IllegalArgumentException::new);
     }
 }
