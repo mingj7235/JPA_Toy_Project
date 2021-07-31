@@ -158,20 +158,20 @@ public class CategoryService {
 //    }
 
     //카테고리 찾기 #3 : branch로만 찾기
-    public Map <String, CategoryDTO> getCategoryByBranch (String branch) {
-        Category category = findCategory(branch, "ROOT");
-
-        CategoryDTO categoryDTO = new CategoryDTO(category);
-
-        Map <String, CategoryDTO> data = new HashMap<>();
-        data.put(categoryDTO.getName(), categoryDTO);
-
-        return data;
-    }
+//    public Map <String, CategoryDTO> getCategoryByBranch (String branch) {
+//        Category category = findCategory(branch, "ROOT");
+//
+//        CategoryDTO categoryDTO = new CategoryDTO(category);
+//
+//        Map <String, CategoryDTO> data = new HashMap<>();
+//        data.put(categoryDTO.getName(), categoryDTO);
+//
+//        return data;
+//    }
 
     //카테고리 찾기 #4 : branch로만 찾고, 최상위 값에 가장 끝단 level도 알려주기
 
-    public CategoryReturnDto getCategoryByBranchWithLevel (String branch) {
+    public CategoryReturnDto getCategoryByBranch(String branch) {
 
         Category category = findCategory(branch, "ROOT");
 
