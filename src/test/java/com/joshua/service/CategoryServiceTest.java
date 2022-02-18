@@ -1,8 +1,9 @@
 package com.joshua.service;
 
-import com.joshua.domain.Category;
-import com.joshua.dto.CategoryDTO;
-import com.joshua.repository.CategoryRepository;
+import com.joshua.legacy.domain.Category;
+import com.joshua.legacy.dto.CategoryDTO;
+import com.joshua.legacy.repository.CategoryRepository;
+import com.joshua.legacy.service.CategoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
